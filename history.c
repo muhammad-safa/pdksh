@@ -22,11 +22,7 @@
 # ifdef EASY_HISTORY
 
 #  ifndef HISTFILE
-#   ifdef OS2
-#    define HISTFILE "history.ksh"
-#   else /* OS2 */
 #    define HISTFILE ".pdksh_history"
-#   endif /* OS2 */
 #  endif
 
 # else

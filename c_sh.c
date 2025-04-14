@@ -321,11 +321,7 @@ c_read(wp)
 				break;
 			while (1) {
 				c = shf_getc(shf);
-				if (c == '\0'
-#ifdef OS2
-				    || c == '\r'
-#endif /* OS2 */
-				    )
+				if (c == '\0')
 					continue;
 				if (c == EOF && shf_error(shf)
 				    && shf_errno(shf) == EINTR)
@@ -892,13 +888,5 @@ const struct builtin shbuiltins [] = {
 	{"ulimit", c_ulimit},
 	{"+umask", c_umask},
 	{"*=unset", c_unset},
-#ifdef OS2
-	/* In OS2, the first line of a file can be "extproc name", which
-	 * tells the command interpreter (cmd.exe) to use name to execute
-	 * the file.  For this to be useful, ksh must ignore commands
-	 * starting with extproc and this does the trick...
-	 */
-	{"extproc", c_label},
-#endif /* OS2 */
 	{NULL, NULL}
 };

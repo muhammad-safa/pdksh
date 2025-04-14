@@ -212,12 +212,6 @@ yylex(cf)
 			switch (c) {
 			  case '\\':
 				c = getsc();
-#ifdef OS2
-				if (isalnum(c)) {
-					*wp++ = CHAR, *wp++ = '\\';
-					*wp++ = CHAR, *wp++ = c;
-				} else 
-#endif
 				if (c) /* trailing \ is lost */
 					*wp++ = QCHAR, *wp++ = c;
 				break;

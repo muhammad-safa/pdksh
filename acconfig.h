@@ -120,9 +120,6 @@
 /* Define if you arg running ISC unix */
 #undef OS_ISC
 
-/* Define if you arg running OS2 with the EMX library */
-#undef OS2
-
 /* Define if you have a POSIX.1 compatiable <sys/wait.h> */
 #undef POSIX_SYS_WAIT
 
