@@ -896,7 +896,7 @@ hist_count_lines(base, bytes)
 	register int bytes;
 {
 	State state = shdr;
-	register lines = 0;
+	register int lines = 0;
 
 	while (bytes--) {
 		switch (state)

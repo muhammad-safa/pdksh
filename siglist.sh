@@ -21,7 +21,7 @@ CC="${1-cc}"
 # The trap here to make up for a bug in bash (1.14.3(1)) that calls the trap
 (trap $trapsigs;
  echo '#include "sh.h"';
- echo 'main() {';
+ echo 'int main() {';
  sed -e '/^[	 ]*#/d' -e 's/^[	 ]*\([^ 	][^ 	]*\)[	 ][	 ]*\(.*[^ 	]\)[ 	]*$/#ifdef SIG\1\
 	printf("%d,`%s`,`%s`\\n", SIG\1 , "\1", "\2" );\
 #endif/'
