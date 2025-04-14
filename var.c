@@ -283,9 +283,7 @@ local(n, copy)
 }
 
 /* get variable string value */
-char *
-str_val(vp)
-	register struct tbl *vp;
+char *str_val(struct tbl *vp)
 {
 	char *s;
 
@@ -325,8 +323,12 @@ str_val(vp)
 		}
 		if (!(vp->flag & INT_U) && vp->val.i < 0)
 			*--s = '-';
-		if (vp->flag & (RJUST|LJUST)) /* case already dealt with */
-			s = formatstr(vp, s);
+        if (vp->flag & (RJUST|LJUST)) { /* case already dealt with */
+            s = formatstr(vp, s);
+            (void)strlcpy(strbuf, s, sizeof(strbuf));
+            afree(s, ATEMP);
+            s = strbuf;
+        }
 	}
 	return s;
 }
@@ -1128,6 +1130,7 @@ arraysearch(vp, val)
 	int val;
 {
 	struct tbl *prev, *curr, *new;
+    size_t namelen = strlen(vp->name) + 1;
 
 	vp->flag |= ARRAY|DEFINED;
 
@@ -1148,8 +1151,9 @@ arraysearch(vp, val)
 		else
 			new = curr;
 	} else
-		new = (struct tbl *)alloc(sizeof(struct tbl)+strlen(vp->name)+1, vp->areap);
-	strcpy(new->name, vp->name);
+        new = (struct tbl *)alloc(sizeof(struct tbl) + namelen,
+            vp->areap);
+	strlcpy(new->name, vp->name, namelen);
 	new->flag = vp->flag & ~(ALLOC|DEFINED|ISSET|SPECIAL);
 	new->type = vp->type;
 	new->areap = vp->areap;

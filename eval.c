@@ -173,6 +173,7 @@ expand(cp, wp, f)
 	int UNINITIALIZED(newlines); /* For trailing newlines in COMSUB */
 	int saw_eq, tilde_ok;
 	int make_magic;
+    size_t len;
 
 	if (cp == NULL)
 		internal_errorf(1, "expand(NULL)");
@@ -413,10 +414,11 @@ expand(cp, wp, f)
 					 * fatal for special builtins (setstr
 					 * does readonly check).
 					 */
-					setstr(st->var, debunk(
-						(char *) alloc(strlen(dp) + 1,
-							ATEMP), dp),
-						KSH_UNWIND_ERROR);
+                    len = strlen(dp) + 1;
+                    setstr(st->var,
+                        debunk((char *) alloc(len, ATEMP),
+                        dp, len),
+                        KSH_UNWIND_ERROR);
 					x.str = str_val(st->var);
 					type = XSUB;
 					if (f&DOBLANK)
@@ -430,7 +432,7 @@ expand(cp, wp, f)
 					errorf("%s: %s", st->var->name,
 					    dp == s ? 
 					      "parameter null or not set"
-					    : (debunk(s, s), s));
+					    : (debunk(s, s, strlen(s) + 1), s));
 				    }
 				}
 				st = st->prev;
@@ -574,7 +576,7 @@ expand(cp, wp, f)
 				else if ((f & DOPAT) || !(fdo & DOMAGIC_))
 					XPput(*wp, p);
 				else
-					XPput(*wp, debunk(p, p));
+					XPput(*wp, debunk(p, p, strlen(p) + 1));
 				fdo = 0;
 				saw_eq = 0;
 				tilde_ok = (f & (DOTILDE|DOASNTILDE)) ? 1 : 0;
@@ -948,7 +950,7 @@ glob(cp, wp, markdirs)
 	int oldsize = XPsize(*wp);
 
 	if (glob_str(cp, wp, markdirs) == 0)
-		XPput(*wp, debunk(cp, cp));
+		XPput(*wp, debunk(cp, cp, strlen(cp) + 1));
 	else
 		qsortp(XPptrv(*wp) + oldsize, (size_t)(XPsize(*wp) - oldsize),
 			xstrcmp);
@@ -1075,7 +1077,7 @@ globit(xs, xpp, sp, wp, check)
 	 */
 	if (!has_globbing(sp, se)) {
 		XcheckN(*xs, xp, se - sp + 1);
-		debunk(xp, sp);
+        debunk(xp, sp, Xnleft(*xs, xp));
 		xp += strlen(xp);
 		*xpp = xp;
 		globit(xs, xpp, np, wp, check);
@@ -1163,10 +1165,7 @@ copy_non_glob(xs, xpp, p)
 #endif /* 0 */
 
 /* remove MAGIC from string */
-char *
-debunk(dp, sp)
-	char *dp;
-	const char *sp;
+char *debunk(char *dp, const char *sp, size_t dlen)
 {
 	char *d, *s;
 
@@ -1184,7 +1183,7 @@ debunk(dp, sp)
 			}
 		*d = '\0';
 	} else if (dp != sp)
-		strcpy(dp, sp);
+		strlcpy(dp, sp, dlen);
 	return dp;
 }
 
@@ -1322,7 +1321,7 @@ alt_expand(wp, start, exp_start, end, fdo)
 		if (fdo & DOGLOB)
 			glob(start, wp, fdo & DOMARKDIRS);
 		else
-			XPput(*wp, debunk(start, start));
+			XPput(*wp, debunk(start, start, end - start));
 		return;
 	}
 	brace_end = p;

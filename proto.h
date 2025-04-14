@@ -56,13 +56,13 @@ void	set_editmode	ARGS((const char *ed));
 int 	x_bind		ARGS((const char *a1, const char *a2, int macro,
 			      int list));
 /* eval.c */
-char *	substitute	ARGS((const char *cp, int f));
-char **	eval		ARGS((char **ap, int f));
-char *	evalstr		ARGS((char *cp, int f));
-char *	evalonestr	ARGS((char *cp, int f));
-char	*debunk		ARGS((char *dp, const char *sp));
-void	expand		ARGS((char *cp, XPtrV *wp, int f));
-int glob_str		ARGS((char *cp, XPtrV *wp, int markdirs));
+char *	substitute	(const char *cp, int f);
+char **	eval		(char **ap, int f);
+char *	evalstr		(char *cp, int f);
+char *	evalonestr	(char *cp, int f);
+char	*debunk		(char *dp, const char *sp, size_t dlen);
+void	expand		(char *cp, XPtrV *wp, int f);
+int glob_str		(char *cp, XPtrV *wp, int markdirs);
 /* exec.c */
 int	fd_clexec	ARGS((int fd));
 int 	execute		ARGS((struct op * volatile t, volatile int flags));

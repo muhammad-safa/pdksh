@@ -395,7 +395,7 @@ vi_hook(ch)
 				}
 			} else {
 				locpat[srchlen] = '\0';
-				(void) strcpy(srchpat, locpat);
+				(void) strlcpy(srchpat, locpat, sizeof srchpat);
 			}
 			state = VCMD;
 		} else if (ch == edchars.erase || ch == Ctrl('h')) {

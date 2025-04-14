@@ -836,7 +836,7 @@ x_load_hist(hp)
 	}
 	x_histp = hp;
 	oldsize = x_size_str(xbuf);
-	(void)strcpy(xbuf, *hp);
+	strlcpy(xbuf, *hp, xend - xbuf);
 	xbp = xbuf;
 	xep = xcp = xbuf + strlen(*hp);
 	xlp_valid = FALSE;

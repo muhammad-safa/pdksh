@@ -1531,16 +1531,16 @@ j_print(j, how, shf)
 		coredumped = 0;
 		switch (p->state) {
 		case PRUNNING:
-			strcpy(buf, "Running");
+			strlcpy(buf, "Running", sizeof buf);
 			break;
 		case PSTOPPED:
-			strcpy(buf, sigtraps[WSTOPSIG(p->status)].mess);
+			strlcpy(buf, sigtraps[WSTOPSIG(p->status)].mess, sizeof buf);
 			break;
 		case PEXITED:
 			if (how == JP_SHORT)
 				buf[0] = '\0';
 			else if (WEXITSTATUS(p->status) == 0)
-				strcpy(buf, "Done");
+				strlcpy(buf, "Done", sizeof buf);
 			else
 				shf_snprintf(buf, sizeof(buf), "Done (%d)",
 					WEXITSTATUS(p->status));
@@ -1556,7 +1556,7 @@ j_print(j, how, shf)
 				|| WTERMSIG(p->status) == SIGPIPE)) {
 				buf[0] = '\0';
 			} else
-				strcpy(buf, sigtraps[WTERMSIG(p->status)].mess);
+				strlcpy(buf, sigtraps[WTERMSIG(p->status)].mess, sizeof buf);
 			break;
 		}
 

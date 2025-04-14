@@ -87,8 +87,9 @@ c_fc(wp)
 			if (strcmp(p, "-") == 0)
 				sflag++;
 			else {
-				editor = str_nsave(p, strlen(p) + 4, ATEMP);
-				strcat(editor, " $_");
+                size_t len = strlen(p) + 4;
+                editor = str_nsave(p, len, ATEMP);
+                strlcat(editor, " $_", len);
 			}
 			break;
 		  case 'g': /* non-at&t ksh */

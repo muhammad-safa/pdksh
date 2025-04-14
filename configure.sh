@@ -103,6 +103,8 @@ AC_CHECK_FUNCS wait3
 AC_CHECK_FUNCS flock
 AC_CHECK_FUNCS lstat
 AC_CHECK_FUNCS times
+AC_CHECK_FUNCS strlcpy
+AC_CHECK_FUNCS strlcat
 
 if AC_CHECK_DEF CLK_TCK limits.h time.h; then
     : yay

@@ -76,12 +76,17 @@ ulton(n, base)
 	return p;
 }
 
-char *
-str_save(s, ap)
-	register const char *s;
-	Area *ap;
+char *str_save(const char *s, Area *ap)
 {
-	return s ? strcpy((char*) alloc((size_t)strlen(s)+1, ap), s) : NULL;
+    size_t len;
+    char *p;
+
+    if (!s)
+        return NULL;
+    len = strlen(s)+1;
+    p = alloc(len, ap);
+    strlcpy(p, s, len+1);
+    return (p);
 }
 
 /* Allocate a string of size n+1 and copy upto n characters from the possibly
@@ -341,9 +346,11 @@ parse_args(argv, what, setargsp)
 	if (cmd_opts[0] == '\0') {
 		char *p, *q;
 
-		strcpy(cmd_opts, "o:"); /* see cmd_opts[] declaration */
+        /* see cmd_opts[] declaration */
+        strlcpy(cmd_opts, "o:", sizeof cmd_opts);
 		p = cmd_opts + strlen(cmd_opts);
-		strcpy(set_opts, "A:o;s"); /* see set_opts[] declaration */
+        /* see set_opts[] declaration */
+        strlcpy(set_opts, "A:o;s", sizeof set_opts);
 		q = set_opts + strlen(set_opts);
 		for (i = 0; i < NELEM(options); i++) {
 			if (options[i].c) {
@@ -524,7 +531,7 @@ gmatch(s, p, isfile)
 		char tbuf[64];
 		char *t = len <= sizeof(tbuf) ? tbuf
 				: (char *) alloc(len, ATEMP);
-		debunk(t, p);
+		debunk(t, p, len);
 		return !strcmp(t, s);
 	}
 	return do_gmatch((const unsigned char *) s, (const unsigned char *) se,

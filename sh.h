@@ -21,6 +21,13 @@
 
 #include <string.h>
 
+#ifndef HAVE_STRLCAT_H
+size_t strlcat(char *dst, const char *src, size_t siz);
+#endif
+#ifndef HAVE_STRLCPY_H
+size_t strlcpy(char *dst, const char *src, size_t siz);
+#endif
+
 #ifdef HAVE_MEMORY_H
 # include <memory.h>
 #endif
