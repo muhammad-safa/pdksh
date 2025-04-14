@@ -5,9 +5,7 @@
 #include "config.h"
 #include <stdio.h>
 #include <sys/types.h>
-#ifdef HAVE_STDLIB_H
-# include <stdlib.h>
-#endif /* HAVE_STDLIB_H */
+#include <stdlib.h>
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif /* HAVE_UNISTD_H */
