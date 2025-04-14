@@ -4,9 +4,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <stdlib.h>
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif /* HAVE_UNISTD_H */
+#include <unistd.h>
 #ifdef HAVE_FCNTL_H
 # include <fcntl.h>
 #else /* HAVE_FCNTL_H */
