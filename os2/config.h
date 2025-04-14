@@ -121,9 +121,6 @@
 /* Define to nothing if compiler doesn't like the volatile keyword */
 /* #undef volatile */
 
-/* Define if C compiler groks function prototypes */
-#define HAVE_PROTOTYPES 1
-
 /* Define if C compiler groks __attribute__((...)) (const, noreturn, format) */
 #define HAVE_GCC_FUNC_ATTR 1
 

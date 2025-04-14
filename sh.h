@@ -6,11 +6,7 @@
 
 #include "config.h"	/* system and option configuration info */
 
-#ifdef HAVE_PROTOTYPES
-# define	ARGS(args)	args	/* prototype declaration */
-#else
-# define	ARGS(args)	()	/* K&R declaration */
-#endif
+#define	ARGS(args)	args	/* prototype declaration */
 
 
 /* Start of common headers */
@@ -107,13 +103,8 @@ void *memmove ARGS((void *d, const void *s, size_t n));
 # endif
 #endif /* HAVE_MEMMOVE */
 
-#ifdef HAVE_PROTOTYPES
-# include <stdarg.h>
-# define SH_VA_START(va, argn) va_start(va, argn)
-#else
-# include <varargs.h>
-# define SH_VA_START(va, argn) va_start(va)
-#endif /* HAVE_PROTOTYPES */
+#include <stdarg.h>
+#define SH_VA_START(va, argn) va_start(va, argn)
 
 #include <errno.h>
 extern int errno;

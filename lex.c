@@ -836,14 +836,7 @@ readhere(iop)
 		ignore_backslash_newline--;
 }
 
-void
-#ifdef HAVE_PROTOTYPES
-yyerror(const char *fmt, ...)
-#else
-yyerror(fmt, va_alist)
-	const char *fmt;
-	va_dcl
-#endif
+void yyerror(const char *fmt, ...)
 {
 	va_list va;
 

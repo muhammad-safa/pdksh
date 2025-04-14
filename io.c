@@ -14,14 +14,7 @@ static int initio_done;
 
 
 /* A shell error occured (eg, syntax error, etc.) */
-void
-#ifdef HAVE_PROTOTYPES
-errorf(const char *fmt, ...)
-#else
-errorf(fmt, va_alist)
-	const char *fmt;
-	va_dcl
-#endif
+void errorf(const char *fmt, ...)
 {
 	va_list va;
 
@@ -39,15 +32,7 @@ errorf(fmt, va_alist)
 }
 
 /* like errorf(), but no unwind is done */
-void
-#ifdef HAVE_PROTOTYPES
-warningf(int fileline, const char *fmt, ...)
-#else
-warningf(fileline, fmt, va_alist)
-	int fileline;
-	const char *fmt;
-	va_dcl
-#endif
+void warningf(int fileline, const char *fmt, ...)
 {
 	va_list va;
 
@@ -62,14 +47,7 @@ warningf(fileline, fmt, va_alist)
 /* Used by built-in utilities to prefix shell and utility name to message
  * (also unwinds environments for special builtins).
  */
-void
-#ifdef HAVE_PROTOTYPES
-bi_errorf(const char *fmt, ...)
-#else
-bi_errorf(fmt, va_alist)
-	const char *fmt;
-	va_dcl
-#endif
+void bi_errorf(const char *fmt, ...)
 {
 	va_list va;
 
@@ -99,15 +77,7 @@ bi_errorf(fmt, va_alist)
 }
 
 /* Called when something that shouldn't happen does */
-void
-#ifdef HAVE_PROTOTYPES
-internal_errorf(int jump, const char *fmt, ...)
-#else
-internal_errorf(jump, fmt, va_alist)
-	int jump;
-	const char *fmt;
-	va_dcl
-#endif
+void internal_errorf(int jump, const char *fmt, ...)
 {
 	va_list va;
 
@@ -139,14 +109,7 @@ error_prefix(fileline)
 }
 
 /* printf to shl_out (stderr) with flush */
-void
-#ifdef HAVE_PROTOTYPES
-shellf(const char *fmt, ...)
-#else
-shellf(fmt, va_alist)
-	const char *fmt;
-	va_dcl
-#endif
+void shellf(const char *fmt, ...)
 {
 	va_list va;
 
@@ -159,14 +122,7 @@ shellf(fmt, va_alist)
 }
 
 /* printf to shl_stdout (stdout) */
-void
-#ifdef HAVE_PROTOTYPES
-shprintf(const char *fmt, ...)
-#else
-shprintf(fmt, va_alist)
-	const char *fmt;
-	va_dcl
-#endif
+void shprintf(const char *fmt, ...)
 {
 	va_list va;
 
@@ -195,14 +151,7 @@ kshdebug_init_()
 }
 
 /* print to debugging log */
-void
-# ifdef HAVE_PROTOTYPES
-kshdebug_printf_(const char *fmt, ...)
-# else
-kshdebug_printf_(fmt, va_alist)
-	const char *fmt;
-	va_dcl
-# endif
+void kshdebug_printf_(const char *fmt, ...)
 {
 	va_list va;
 

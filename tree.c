@@ -366,16 +366,7 @@ tputS(wp, shf)
  * variable args with an ANSI compiler
  */
 /* VARARGS */
-int
-#ifdef HAVE_PROTOTYPES
-fptreef(struct shf *shf, int indent, const char *fmt, ...)
-#else
-fptreef(shf, indent, fmt, va_alist) 
-  struct shf *shf;
-  int indent;
-  const char *fmt;
-  va_dcl
-#endif
+int fptreef(struct shf *shf, int indent, const char *fmt, ...)
 {
   va_list	va;
 
@@ -387,16 +378,7 @@ fptreef(shf, indent, fmt, va_alist)
 }
 
 /* VARARGS */
-char *
-#ifdef HAVE_PROTOTYPES
-snptreef(char *s, int n, const char *fmt, ...)
-#else
-snptreef(s, n, fmt, va_alist)
-  char *s;
-  int n;
-  const char *fmt;
-  va_dcl
-#endif
+char *snptreef(char *s, int n, const char *fmt, ...)
 {
   va_list va;
   struct shf shf;
