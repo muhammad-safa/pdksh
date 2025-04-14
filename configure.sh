@@ -35,7 +35,7 @@ locals() {
     case "$K" in
     --DISABLE-*)disable=`echo $K | sed -e 's/--DISABLE-//' | tr '-' '_'`
 		echo NO_${disable}=T ;;
-    --HISTORY=*)history=`echo $K | sed -e '/^--HISTORY=//'`
+    --HISTORY=*)history=`echo $K | sed -e 's/^--HISTORY=//'`
 		if [ "$history" = "NO" ]; then
 		    echo HISTORY=$history
 		elif [ "$history" = "SIMPLE" ]; then
