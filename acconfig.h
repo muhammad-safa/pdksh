@@ -90,15 +90,6 @@
 /* Define if you can include <sys/ioctl.h> with <termio.h> */
 #undef SYS_IOCTL_WITH_TERMIO
 
-/* Define if you have a memset() function in your C library */
-#undef HAVE_MEMSET
-
-/* Define if you have a memmove() function in your C library */
-#undef HAVE_MEMMOVE
-
-/* Define if you have a bcopy() function in your C library */
-#undef HAVE_BCOPY
-
 /* Define if you have a lstat() function in your C library */
 #undef HAVE_LSTAT
 

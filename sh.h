@@ -14,37 +14,16 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <setjmp.h>
-#ifdef HAVE_STDDEF_H
-# include <stddef.h>
-#endif
+#include <stddef.h>
 
 #include <stdlib.h>
 #include <unistd.h>
 
 #include <string.h>
-#ifndef HAVE_STRSTR
-char *strstr ARGS((const char *s, const char *p));
-#endif /* HAVE_STRSTR */
-#ifndef HAVE_STRCASECMP
-int strcasecmp ARGS((const char *s1, const char *s2));
-int strncasecmp ARGS((const char *s1, const char *s2, int n));
-#endif /* HAVE_STRCASECMP */
 
 #ifdef HAVE_MEMORY_H
 # include <memory.h>
 #endif
-#ifndef HAVE_MEMSET
-# define memcpy(d, s, n)	bcopy(s, d, n)
-# define memcmp(s1, s2, n)	bcmp(s1, s2, n)
-void *memset ARGS((void *d, int c, size_t n));
-#endif /* HAVE_MEMSET */
-#ifndef HAVE_MEMMOVE
-# ifdef HAVE_BCOPY
-#  define memmove(d, s, n)	bcopy(s, d, n)
-# else
-void *memmove ARGS((void *d, const void *s, size_t n));
-# endif
-#endif /* HAVE_MEMMOVE */
 
 #include <stdarg.h>
 #define SH_VA_START(va, argn) va_start(va, argn)
@@ -166,10 +145,6 @@ typedef	RETSIGTYPE (*handler_t) ARGS((int));	/* signal handler */
 # endif /* HAVE__SETJMP */
 # define ksh_jmp_buf		jmp_buf
 #endif /* HAVE_SIGSETJMP */
-
-#ifndef HAVE_DUP2
-extern int dup2 ARGS((int, int));
-#endif /* !HAVE_DUP2 */
 
 /* Find a integer type that is at least 32 bits (or die) - SIZEOF_* defined
  * by autoconf (assumes an 8 bit byte, but I'm not concerned).
