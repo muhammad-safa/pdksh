@@ -47,10 +47,8 @@ static const char *const initcoms [] = {
 	 /* Standard ksh aliases */
 	  "hash=alias -t",	/* not "alias -t --": hash -r needs to work */
 	  "type=whence -v",
-#ifdef JOBS
 	  "stop=kill -STOP",
 	  "suspend=kill -STOP $$",
-#endif
 #ifdef KSH
 	  "autoload=typeset -fu",
 	  "functions=typeset -f",

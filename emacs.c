@@ -1421,8 +1421,7 @@ x_bind(a1, a2, macro, list)
 	return 0;
 }
 
-void
-x_init_emacs()
+void x_init_emacs()
 {
 	int i, j;
 
@@ -1619,58 +1618,49 @@ x_game_of_life(c)
  */
 
 
-static int
-x_comp_comm(c)
-	int c;
+static int x_comp_comm(int c)
 {
 	do_complete(XCF_COMMAND, CT_COMPLETE);
 	return KSTD;
 }
-static int
-x_list_comm(c)
-	int c;
+
+static int x_list_comm(int c)
 {
 	do_complete(XCF_COMMAND, CT_LIST);
 	return KSTD;
 }
-static int
-x_complete(c)
-	int c;
+
+static int x_complete(int c)
 {
 	do_complete(XCF_COMMAND_FILE, CT_COMPLETE);
 	return KSTD;
 }
-static int
-x_enumerate(c)
-	int c;
+
+static int x_enumerate(int c)
 {
 	do_complete(XCF_COMMAND_FILE, CT_LIST);
 	return KSTD;
 }
-static int
-x_comp_file(c)
-	int c;
+
+static int x_comp_file(int c)
 {
 	do_complete(XCF_FILE, CT_COMPLETE);
 	return KSTD;
 }
-static int
-x_list_file(c)
-	int c;
+
+static int x_list_file(int c)
 {
 	do_complete(XCF_FILE, CT_LIST);
 	return KSTD;
 }
-static int
-x_comp_list(c)
-	int c;
+
+static int x_comp_list(int c)
 {
 	do_complete(XCF_COMMAND_FILE, CT_COMPLIST);
 	return KSTD;
 }
-static int
-x_expand(c)
-	int c;
+
+static int x_expand(int c)
 {
 	char **words;
 	int nwords = 0;
@@ -1699,11 +1689,9 @@ x_expand(c)
 	return KSTD;
 }
 
-/* type == 0 for list, 1 for complete and 2 for complete-list */
-static void
-do_complete(flags, type)
-	int flags;	/* XCF_{COMMAND,FILE,COMMAND_FILE} */
-	Comp_type type;
+/* type == 0 for list, 1 for complete and 2 for complete-list 
+   flags = XCF_{COMMAND,FILE,COMMAND_FILE} */
+static void do_complete(int flags, Comp_type type)
 {
 	char **words;
 	int nwords = 0;
@@ -1944,9 +1932,7 @@ x_set_arg(c)
 
 
 /* Comment or uncomment the current line. */
-static int
-x_comment(c)
-	int c;
+static int x_comment(int c)
 {
 	int oldsize = x_size_str(xbuf);
 	int len = xep - xbuf;
@@ -1981,9 +1967,7 @@ x_comment(c)
  *      KSTD
  */
 
-static int
-x_prev_histword(c)
-	int c;
+static int x_prev_histword(int c)
 {
   char *rcp;
   char *cp;
@@ -2031,9 +2015,7 @@ x_prev_histword(c)
 }
 
 /* Uppercase N(1) words */
-static int
-x_fold_upper(c)
-  int c;
+static int x_fold_upper(int c)
 {
 	return x_fold_case('U');
 }
@@ -2133,8 +2115,7 @@ x_fold_case(c)
  *      cp or NULL
  */
 
-static char *
-x_lastcp()
+static char *x_lastcp()
 {
   char *rcp;
   int i;

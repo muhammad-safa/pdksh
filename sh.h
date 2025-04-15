@@ -337,9 +337,7 @@ enum sh_flag {
 	FNOGLOB,	/* -f: don't do file globbing */
 	FNOHUP,		/* -H: don't kill running jobs when login shell exits */
 	FNOLOG,		/* don't save functions in history (ignored) */
-#ifdef	JOBS
 	FNOTIFY,	/* -b: asynchronous job completion notification */
-#endif
 	FNOUNSET,	/* -u: using an unset var is an error */
 	FPHYSICAL,	/* -o physical: don't do logical cd's/pwd's */
 	FPOSIX,		/* -o posix: be posixly correct */

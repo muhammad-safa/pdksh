@@ -144,19 +144,13 @@ const struct option options[] = {
 	{ "keyword",	'k',		OF_ANY },
 	{ "login",	'l',	    OF_CMDLINE },
 	{ "markdirs",	'X',		OF_ANY },
-#ifdef JOBS
 	{ "monitor",	'm',		OF_ANY },
-#else /* JOBS */
-	{ (char *) 0,	'm',		     0 }, /* so FMONITOR not ifdef'd */
-#endif /* JOBS */
 	{ "noclobber",	'C',		OF_ANY },
 	{ "noexec",	'n',		OF_ANY },
 	{ "noglob",	'f',		OF_ANY },
 	{ "nohup",	  0,		OF_ANY },
 	{ "nolog",	  0,		OF_ANY }, /* no effect */
-#ifdef	JOBS
 	{ "notify",	'b',		OF_ANY },
-#endif	/* JOBS */
 	{ "nounset",	'u',		OF_ANY },
 	{ "physical",	  0,		OF_ANY }, /* non-standard */
 	{ "posix",	  0,		OF_ANY }, /* non-standard */
@@ -280,12 +274,10 @@ change_flag(f, what, newval)
 
 	oldval = Flag(f);
 	Flag(f) = newval;
-#ifdef JOBS
 	if (f == FMONITOR) {
 		if (what != OF_CMDLINE && newval != oldval)
 			j_change();
 	} else
-#endif /* JOBS */
 #ifdef EDIT
 	if (0
 # ifdef VI

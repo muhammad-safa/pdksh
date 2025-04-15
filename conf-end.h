@@ -30,10 +30,6 @@
 # define JOB_SIGS
 #endif
 
-#if !defined(JOB_SIGS) || !(defined(POSIX_PGRP) || defined(BSD_PGRP))
-# undef JOBS /* if no JOB_SIGS, no job control support */
-#endif
-
 /* pdksh assumes system calls return EINTR if a signal happened (this so
  * the signal handler doesn't have to longjmp()).  I don't know if this
  * happens (or can be made to happen) with sigset() et. al. (the bsd41 signal

@@ -9,9 +9,7 @@
 #include <sys/cygwin.h>
 #endif /* __CYGWIN__ */
 
-int
-c_cd(wp)
-	char	**wp;
+int c_cd(char **wp)
 {
 	int optc;
 	int physical = Flag(FPHYSICAL);
@@ -1087,10 +1085,7 @@ c_jobs(wp)
 	return rv;
 }
 
-#ifdef JOBS
-int
-c_fgbg(wp)
-	char **wp;
+int c_fgbg(char **wp)
 {
 	int bg = strcmp(*wp, "bg") == 0;
 	int UNINITIALIZED(rv);
@@ -1112,7 +1107,6 @@ c_fgbg(wp)
 	 */
 	return (bg || Flag(FPOSIX)) ? 0 : rv;
 }
-#endif
 
 struct kill_info {
 	int num_width;
@@ -1427,10 +1421,8 @@ const struct builtin kshbuiltins [] = {
 	{"=typeset", c_typeset},
 	{"+unalias", c_unalias},
 	{"whence", c_whence},
-#ifdef JOBS
 	{"+bg", c_fgbg},
 	{"+fg", c_fgbg},
-#endif
 #ifdef EMACS
 	{"bind", c_bind},
 #endif

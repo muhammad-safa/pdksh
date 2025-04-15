@@ -124,9 +124,6 @@
 /* Include vi editing? (see comments in configure.in for more details) */
 #undef VI
 
-/* Include job control? (see comments in configure.in for more details) */
-#undef JOBS
-
 /* Include brace-expansion? (see comments in configure.in for more details) */
 #undef BRACE_EXPAND
 

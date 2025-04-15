@@ -49,31 +49,25 @@
 # endif /* _SC_CHILD_MAX */
 #endif /* !CHILD_MAX */
 
-#ifdef JOBS
-# if defined(HAVE_TCSETPGRP) || defined(TIOCSPGRP)
-#  define TTY_PGRP
-# endif
-# ifdef BSD_PGRP
-#  define setpgid	setpgrp
-#  define getpgID()	getpgrp(0)
-# else
-#  define getpgID()	getpgrp()
-# endif
-# if defined(TTY_PGRP) && !defined(HAVE_TCSETPGRP)
+#if defined(HAVE_TCSETPGRP) || defined(TIOCSPGRP)
+# define TTY_PGRP
+#endif
+#ifdef BSD_PGRP
+# define setpgid	setpgrp
+# define getpgID()	getpgrp(0)
+#else
+# define getpgID()	getpgrp()
+#endif
+#if defined(TTY_PGRP) && !defined(HAVE_TCSETPGRP)
 int tcsetpgrp(int fd, pid_t grp);
 int tcgetpgrp(int fd);
 
-int
-tcsetpgrp(fd, grp)
-	int fd;
-	pid_t grp;
+int tcsetpgrp(int fd, pid_t grp)
 {
 	return ioctl(fd, TIOCSPGRP, &grp);
 }
 
-int
-tcgetpgrp(fd)
-	int	fd;
+int tcgetpgrp(int fd)
 {
 	int r, grp;
 
@@ -82,11 +76,6 @@ tcgetpgrp(fd)
 	return grp;
 }
 # endif /* !HAVE_TCSETPGRP && TIOCSPGRP */
-#else /* JOBS */
-/* These so we can use ifdef xxx instead of if defined(JOBS) && defined(xxx) */
-# undef TTY_PGRP
-# undef NEED_PGRP_SYNC
-#endif /* JOBS */
 
 /* End of system configuration stuff */
 
@@ -190,9 +179,7 @@ static int		child_max;	/* CHILD_MAX */
 static int		held_sigchld;
 #endif /* JOB_SIGS */
 
-#ifdef JOBS
 static struct shf	*shl_j;
-#endif /* JOBS */
 
 #ifdef NEED_PGRP_SYNC
 /* On some systems, the kernel doesn't count zombie processes when checking
@@ -248,7 +235,6 @@ j_init(mflagset)
 	setsig(&sigtraps[SIGCHLD], SIG_DFL, SS_RESTORE_ORIG|SS_FORCE);
 #endif /* JOB_SIGS */
 
-#ifdef JOBS
 	if (!mflagset && Flag(FTALKING))
 		Flag(FMONITOR) = 1;
 
@@ -257,7 +243,7 @@ j_init(mflagset)
 	 */
 	shl_j = shf_fdopen(2, SHF_WR, (struct shf *) 0);
 
-# ifdef TTY_PGRP
+#ifdef TTY_PGRP
 	if (Flag(FMONITOR) || Flag(FTALKING)) {
 		int i;
 
@@ -271,13 +257,12 @@ j_init(mflagset)
 				SS_RESTORE_IGN|SS_FORCE);
 		}
 	}
-# endif /* TTY_PGRP */
+#endif /* TTY_PGRP */
 
 	/* j_change() calls tty_init() */
 	if (Flag(FMONITOR))
 		j_change();
 	else
-#endif /* JOBS */
 	  if (Flag(FTALKING))
 		tty_init(TRUE);
 }
@@ -303,22 +288,19 @@ j_exit()
 				kill_job(j, SIGHUP);
 			else
 				killpg(j->pgrp, SIGHUP);
-#ifdef JOBS
 			if (j->state == PSTOPPED) {
 				if (j->pgrp == 0)
 					kill_job(j, SIGCONT);
 				else
 					killpg(j->pgrp, SIGCONT);
 			}
-#endif /* JOBS */
 		}
 	}
 	if (killed)
 		sleep(1);
 	j_notify();
 
-#ifdef JOBS
-# ifdef TTY_PGRP
+#ifdef TTY_PGRP
 	if (kshpid == procpid && restore_ttypgrp >= 0) {
 		/* Need to restore the tty pgrp to what it was when the
 		 * shell started up, so that the process that started us
@@ -330,18 +312,15 @@ j_exit()
 		tcsetpgrp(tty_fd, restore_ttypgrp);
 		setpgid(0, restore_ttypgrp);
 	}
-# endif /* TTY_PGRP */
+#endif /* TTY_PGRP */
 	if (Flag(FMONITOR)) {
 		Flag(FMONITOR) = 0;
 		j_change();
 	}
-#endif /* JOBS */
 }
 
-#ifdef JOBS
 /* turn job control on or off according to Flag(FMONITOR) */
-void
-j_change()
+void j_change()
 {
 	int i;
 
@@ -349,7 +328,7 @@ j_change()
 		/* Don't call get_tty() 'til we own the tty process group */
 		tty_init(FALSE);
 
-# ifdef TTY_PGRP
+#ifdef TTY_PGRP
 		/* no controlling tty, no SIGT* */
 		ttypgrp_ok = tty_fd >= 0 && tty_devtty;
 
@@ -397,7 +376,7 @@ j_change()
 				our_pgrp = kshpid;
 			}
 		}
-#  if defined(NTTYDISC) && defined(TIOCSETD) && !defined(HAVE_TERMIOS_H) && !defined(HAVE_TERMIO_H)
+# if defined(NTTYDISC) && defined(TIOCSETD) && !defined(HAVE_TERMIOS_H) && !defined(HAVE_TERMIO_H)
 		if (ttypgrp_ok) {
 			int ldisc = NTTYDISC;
 
@@ -406,14 +385,14 @@ j_change()
 				"j_init: can't set new line discipline: %s",
 					strerror(errno));
 		}
-#  endif /* NTTYDISC && TIOCSETD */
+# endif /* NTTYDISC && TIOCSETD */
 		if (!ttypgrp_ok)
 			warningf(FALSE, "warning: won't have full job control");
-# endif /* TTY_PGRP */
+#endif /* TTY_PGRP */
 		if (tty_fd >= 0)
 			get_tty(tty_fd, &tty_state);
 	} else {
-# ifdef TTY_PGRP
+#ifdef TTY_PGRP
 		ttypgrp_ok = 0;
 		if (Flag(FTALKING))
 			for (i = NELEM(tt_sigs); --i >= 0; )
@@ -427,12 +406,11 @@ j_change()
 						(sigtraps[tt_sigs[i]].flags & TF_ORIG_IGN) ? SIG_IGN : SIG_DFL,
 						SS_RESTORE_ORIG|SS_FORCE);
 			}
-# endif /* TTY_PGRP */
+#endif /* TTY_PGRP */
 		if (!Flag(FTALKING))
 			tty_close();
 	}
 }
-#endif /* JOBS */
 
 /* execute tree in child subprocess */
 int
@@ -539,15 +517,14 @@ exchild(t, flags, close_fd)
 	else
 		p->pid = i;
 
-#ifdef JOBS
 	/* job control set up */
 	if (Flag(FMONITOR) && !(flags&XXCOM)) {
 		int	dotty = 0;
-# ifdef NEED_PGRP_SYNC
+#ifdef NEED_PGRP_SYNC
 		int	first_child_sync = 0;
-# endif /* NEED_PGRP_SYNC */
+#endif /* NEED_PGRP_SYNC */
 
-# ifdef NEED_PGRP_SYNC
+#ifdef NEED_PGRP_SYNC
 		if (j_sync_open) {
 			/*
 			 * The Parent closes 0, keeps 1 open 'til the whole
@@ -565,7 +542,7 @@ exchild(t, flags, close_fd)
 				closepipe(j_sync_pipe);
 			}
 		}
-# endif /* NEED_PGRP_SYNC */
+#endif /* NEED_PGRP_SYNC */
 		if (j->pgrp == 0) {	/* First process */
 			j->pgrp = p->pid;
 			dotty = 1;
@@ -575,7 +552,7 @@ exchild(t, flags, close_fd)
 		 * condition
 		 */
 		setpgid(p->pid, j->pgrp);
-# ifdef TTY_PGRP
+#ifdef TTY_PGRP
 		/* YYY: should this be
 		   if (ttypgrp_ok && ischild && !(flags&XBGND))
 			tcsetpgrp(tty_fd, j->pgrp);
@@ -583,8 +560,8 @@ exchild(t, flags, close_fd)
 		 */
 		if (ttypgrp_ok && dotty && !(flags & XBGND))
 			tcsetpgrp(tty_fd, j->pgrp);
-# endif /* TTY_PGRP */
-# ifdef NEED_PGRP_SYNC
+#endif /* TTY_PGRP */
+#ifdef NEED_PGRP_SYNC
 		if (first_child_sync) {
 			char c;
 			while (read(j_sync_pipe[0], &c, 1) == -1
@@ -593,9 +570,8 @@ exchild(t, flags, close_fd)
 			close(j_sync_pipe[0]);
 			j_sync_open = 0;
 		}
-# endif /* NEED_PGRP_SYNC */
+#endif /* NEED_PGRP_SYNC */
 	}
-#endif /* JOBS */
 
 	/* used to close pipe input fd */
 	if (close_fd >= 0 && (((flags & XPCLOSE) && !ischild)
@@ -639,10 +615,8 @@ exchild(t, flags, close_fd)
 		}
 		remove_job(j, "child");	/* in case of `jobs` command */
 		nzombie = 0;
-#ifdef JOBS
 		ttypgrp_ok = 0;
 		Flag(FMONITOR) = 0;
-#endif /* JOBS */
 		Flag(FTALKING) = 0;
 		tty_close();
 		cleartraps();
@@ -836,10 +810,8 @@ j_kill(cp, sig)
 			rv = 1;
 		}
 	} else {
-#ifdef JOBS
 		if (j->state == PSTOPPED && (sig == SIGTERM || sig == SIGHUP))
 			(void) killpg(j->pgrp, SIGCONT);
-#endif /* JOBS */
 		if (killpg(j->pgrp, sig) < 0) {
 			bi_errorf("%s: %s", cp, strerror(errno));
 			rv = 1;
@@ -853,12 +825,8 @@ j_kill(cp, sig)
 	return rv;
 }
 
-#ifdef JOBS
 /* fg and bg built-ins: called only if Flag(FMONITOR) set */
-int
-j_resume(cp, bg)
-	const char *cp;
-	int	bg;
+int j_resume(const char *cp, int bg)
 {
 	Job	*j;
 	Proc	*p;
@@ -902,7 +870,7 @@ j_resume(cp, bg)
 	if (bg)
 		j_set_async(j);
 	else {
-# ifdef TTY_PGRP
+#ifdef TTY_PGRP
 		/* attach tty to job */
 		if (j->state == PRUNNING) {
 			if (ttypgrp_ok && (j->flags & JF_SAVEDTTY)) {
@@ -920,7 +888,7 @@ j_resume(cp, bg)
 				return 1;
 			}
 		}
-# endif /* TTY_PGRP */
+#endif /* TTY_PGRP */
 		j->flags |= JF_FG;
 		j->flags &= ~JF_KNOWN;
 		if (j == async_job)
@@ -932,7 +900,7 @@ j_resume(cp, bg)
 
 		if (!bg) {
 			j->flags &= ~JF_FG;
-# ifdef TTY_PGRP
+#ifdef TTY_PGRP
 			if (ttypgrp_ok && (j->flags & JF_SAVEDTTY)) {
 				set_tty(tty_fd, &tty_state, TF_NONE);
 			}
@@ -942,7 +910,7 @@ j_resume(cp, bg)
 					tty_fd, (int) our_pgrp,
 					strerror(errno));
 			}
-# endif /* TTY_PGRP */
+#endif /* TTY_PGRP */
 		}
 		sigprocmask(SIG_SETMASK, &omask, (sigset_t *) 0);
 		bi_errorf("cannot continue job %s: %s",
@@ -950,17 +918,16 @@ j_resume(cp, bg)
 		return 1;
 	}
 	if (!bg) {
-# ifdef TTY_PGRP
+#ifdef TTY_PGRP
 		if (ttypgrp_ok) {
 			j->flags &= ~(JF_SAVEDTTY | JF_SAVEDTTYPGRP);
 		}
-# endif /* TTY_PGRP */
+#endif /* TTY_PGRP */
 		rv = j_waitj(j, JW_NONE, "jw:resume");
 	}
 	sigprocmask(SIG_SETMASK, &omask, (sigset_t *) 0);
 	return rv;
 }
-#endif /* JOBS */
 
 /* are there any running or stopped jobs ? */
 int
@@ -970,10 +937,8 @@ j_stopped_running()
 	int	which = 0;
 
 	for (j = job_list; j != (Job *) 0; j = j->next) {
-#ifdef JOBS
 		if (j->ppid == procpid && j->state == PSTOPPED)
 			which |= 1;
-#endif /* JOBS */
 		if (Flag(FLOGIN) && !Flag(FNOHUP) && procpid == kshpid
 		    && j->ppid == procpid && j->state == PRUNNING)
 			which |= 2;
@@ -1056,10 +1021,8 @@ j_notify()
 	sigprocmask(SIG_BLOCK, &sm_sigchld, &omask);
 #endif /* JOB_SIGS */
 	for (j = job_list; j; j = j->next) {
-#ifdef JOBS
 		if (Flag(FMONITOR) && (j->flags & JF_CHANGED))
 			j_print(j, JP_MEDIUM, shl_out);
-#endif /* JOBS */
 		/* Remove job after doing reports so there aren't
 		 * multiple +/- jobs.
 		 */
@@ -1271,7 +1234,6 @@ j_waitj(j, flags, where)
 					j->flags &= ~JF_USETTYMODE;
 			}
 		}
-#ifdef JOBS
 		/* If it looks like user hit ^C to kill a job, pretend we got
 		 * one too to break out of for loops, etc.  (at&t ksh does this
 		 * even when not monitoring, but this doesn't make sense since
@@ -1282,7 +1244,6 @@ j_waitj(j, flags, where)
 		    && WIFSIGNALED(status)
 		    && (sigtraps[WTERMSIG(status)].flags & TF_TTY_INTR))
 			trapsig(WTERMSIG(status));
-#endif /* JOBS */
 	}
 
 	j_usrtime = j->usrtime;
@@ -1362,11 +1323,9 @@ found:
 		j->systime += t1.tms_cstime - t0.tms_cstime;
 		t0 = t1;
 		p->status = status;
-#ifdef JOBS
 		if (WIFSTOPPED(status))
 			p->state = PSTOPPED;
 		else
-#endif /* JOBS */
 		if (WIFSIGNALED(status))
 			p->state = PSIGNALLED;
 		else
@@ -1454,7 +1413,6 @@ check_job(j)
 #endif /* KSH */
 
 	j->flags |= JF_CHANGED;
-#ifdef JOBS
 	if (Flag(FMONITOR) && !(j->flags & JF_XXCOM)) {
 		/* Only put stopped jobs at the front to avoid confusing
 		 * the user (don't want finished jobs effecting %+ or %-)
@@ -1484,7 +1442,6 @@ check_job(j)
 				remove_job(j, "notify");
 		}
 	}
-#endif /* JOBS */
 	if (!Flag(FMONITOR) && !(j->flags & (JF_WAITING|JF_FG))
 	    && j->state != PSTOPPED)
 	{
