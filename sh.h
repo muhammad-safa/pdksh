@@ -222,7 +222,7 @@ EXTERN	struct env {
 	struct	block *loc;		/* local variables and functions */
 	short  *savefd;			/* original redirected fd's */
 	struct	env *oenv;		/* link to previous enviroment */
-	jmp_buf jbuf;		/* long jump back to env creator */
+	sigjmp_buf jbuf;		/* long jump back to env creator */
 	struct temp *temps;		/* temp files */
 } *e;
 
