@@ -83,7 +83,7 @@ else
     AC_DEFINE 'USA_FAKE_SIGACT' '1'
 fi
 
-AC_CHECK_HEADERS sys/wait.h paths.h
+AC_CHECK_HEADERS sys/wait.h
 AC_CHECK_HEADERS sys/time.h sys/resource.h termios.h termio.h ulimit.h
 AC_CHECK_HEADERS limits.h
 

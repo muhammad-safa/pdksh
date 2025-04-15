@@ -6,7 +6,8 @@
 
 #include "sh.h"
 #include "ksh_stat.h"
-#include "ksh_time.h"
+
+#include <time.h>
 
 extern char **environ;
 

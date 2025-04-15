@@ -17,10 +17,8 @@
 */
 
 #include "sh.h"
-#include "ksh_time.h"
-#ifdef HAVE_SYS_RESOURCE_H
-# include <sys/resource.h>
-#endif /* HAVE_SYS_RESOURCE_H */
+#include <sys/resource.h>
+
 #ifdef HAVE_ULIMIT_H
 # include <ulimit.h>
 #else /* HAVE_ULIMIT_H */

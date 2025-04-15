@@ -40,8 +40,8 @@ OBJS = alloc.o c_ksh.o c_sh.o c_test.o c_ulimit.o edit.o emacs.o \
 	eval.o exec.o expr.o history.o io.o jobs.o lex.o mail.o \
 	main.o misc.o missing.o path.o shf.o sigact.o syn.o table.o trap.o \
 	tree.o tty.o var.o version.o vi.o
-HDRS = c_test.h edit.h expand.h ksh_dir.h ksh_limval.h ksh_stat.h ksh_time.h \
-	ksh_times.h ksh_wait.h lex.h proto.h sh.h shf.h sigact.h \
+HDRS = c_test.h edit.h expand.h ksh_dir.h ksh_limval.h ksh_stat.h \
+	ksh_wait.h lex.h proto.h sh.h shf.h sigact.h \
 	table.h tree.h tty.h
 DISTFILES = $(SRCS) $(HDRS) ksh.Man Makefile.in configure.in \
 	config.h.in conf-end.h acconfig.h aclocal.m4 emacs-gen.sh \
@@ -164,15 +164,14 @@ c_ksh.o: c_ksh.c sh.h config.h conf-end.h \
  sh.h
 c_sh.o: c_sh.c sh.h config.h conf-end.h \
  shf.h table.h tree.h expand.h lex.h \
- proto.h ksh_stat.h ksh_time.h \
- ksh_times.h \
+ proto.h ksh_stat.h \
  sh.h
 c_test.o: c_test.c sh.h config.h conf-end.h \
  shf.h table.h tree.h expand.h lex.h \
  proto.h ksh_stat.h c_test.h
 c_ulimit.o: c_ulimit.c sh.h config.h conf-end.h \
  shf.h table.h tree.h expand.h lex.h \
- proto.h ksh_time.h \
+ proto.h \
  sh.h
 edit.o: edit.c config.h conf-end.h sh.h \
  shf.h table.h tree.h expand.h lex.h \
@@ -206,7 +205,6 @@ io.o: io.c \
 jobs.o: jobs.c sh.h config.h conf-end.h \
  shf.h table.h tree.h expand.h lex.h \
  proto.h ksh_stat.h ksh_wait.h \
- ksh_times.h ksh_time.h \
  tty.h \
  sh.h
 lex.o: lex.c sh.h config.h conf-end.h \
@@ -215,11 +213,11 @@ lex.o: lex.c sh.h config.h conf-end.h \
  sh.h
 mail.o: mail.c config.h conf-end.h sh.h \
  shf.h table.h tree.h expand.h lex.h \
- proto.h ksh_stat.h ksh_time.h \
+ proto.h ksh_stat.h \
  sh.h
 main.o: main.c sh.h config.h conf-end.h \
  shf.h table.h tree.h expand.h lex.h \
- proto.h ksh_stat.h ksh_time.h \
+ proto.h ksh_stat.h \
  sh.h
 misc.o: misc.c sh.h config.h conf-end.h \
  shf.h table.h tree.h expand.h lex.h \
@@ -228,8 +226,6 @@ misc.o: misc.c sh.h config.h conf-end.h \
 missing.o: missing.c sh.h config.h conf-end.h \
  shf.h table.h tree.h expand.h lex.h \
  proto.h ksh_stat.h ksh_dir.h \
- ksh_time.h \
- ksh_times.h \
  sh.h
 path.o: path.c sh.h config.h conf-end.h \
  shf.h table.h tree.h expand.h lex.h \
@@ -259,7 +255,7 @@ tty.o: tty.c sh.h config.h conf-end.h \
  sh.h
 var.o: var.c sh.h config.h conf-end.h \
  shf.h table.h tree.h expand.h lex.h \
- proto.h ksh_time.h \
+ proto.h \
  ksh_limval.h \
  ksh_stat.h \
  sh.h

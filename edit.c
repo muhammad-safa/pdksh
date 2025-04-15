@@ -68,7 +68,7 @@ x_init()
 		/* `feature not available' */
 		vdisable_c = (char) 0377;
 #else
-# if defined(HAVE_PATHCONF) && defined(_PC_VDISABLE)
+# if defined(_PC_VDISABLE)
 	vdisable_c = fpathconf(tty_fd, _PC_VDISABLE);
 # else
 	vdisable_c = (char) 0377;	/* default to old BSD value */

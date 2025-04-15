@@ -22,10 +22,11 @@
  *	- NEED_PGRP_SYNC defined iff JOBS is defined - see comment below
  */
 
+#include <sys/times.h>
+
 #include "sh.h"
 #include "ksh_stat.h"
 #include "ksh_wait.h"
-#include "ksh_times.h"
 #include "tty.h"
 
 /* Start of system configuration stuff */
@@ -1324,7 +1325,7 @@ j_sigchld(sig)
 		}
 #endif /* JOB_SIGS */
 
-	ksh_times(&t0);
+	times(&t0);
 	do {
 #ifdef JOB_SIGS
 		pid = ksh_waitpid(-1, &status, (WNOHANG|WUNTRACED));
@@ -1335,7 +1336,7 @@ j_sigchld(sig)
 		if (pid <= 0)	/* return if would block (0) ... */
 			break;	/* ... or no children or interrupted (-1) */
 
-		ksh_times(&t1);
+		times(&t1);
 
 		/* find job and process structures for this pid */
 		for (j = job_list; j != (Job *) 0; j = j->next)
