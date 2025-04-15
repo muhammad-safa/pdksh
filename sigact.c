@@ -325,7 +325,7 @@ sigprocmask(how, set, oset)
   sigset_t *set, *oset;
 {
 #ifdef USE_SIGSET
-  register int i;
+  int i;
 #endif
   static sigset_t sm;
   static int once = 0;
@@ -392,7 +392,7 @@ sigsuspend(mask)
 #ifdef USE_SIGMASK
   sigpause(*mask);
 #else
-  register int i;
+  int i;
 
 # ifdef USE_SIGSET
 

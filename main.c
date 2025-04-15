@@ -400,7 +400,7 @@ include(name, argc, argv, intr_ok)
 	char **argv;
 	int intr_ok;
 {
-	register Source *volatile s = NULL;
+	Source *volatile s = NULL;
 	Source *volatile sold;
 	struct shf *shf;
 	char **volatile old_argv;
@@ -473,7 +473,7 @@ int
 command(comm)
 	const char *comm;
 {
-	register Source *s;
+	Source *s;
 
 	s = pushs(SSTRING, ATEMP);
 	s->start = s->str = comm;
@@ -627,7 +627,7 @@ void
 newenv(type)
 	int type;
 {
-	register struct env *ep;
+	struct env *ep;
 
 	ep = (struct env *) alloc(sizeof(*ep), ATEMP);
 	ep->type = type;
@@ -643,8 +643,8 @@ newenv(type)
 void
 quitenv()
 {
-	register struct env *ep = e;
-	register int fd;
+	struct env *ep = e;
+	int fd;
 
 	if (ep->oenv && ep->oenv->loc != ep->loc)
 		popblock();

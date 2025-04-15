@@ -4,9 +4,7 @@
 
 #include "sh.h"
 #include <ctype.h>	/* for FILECHCONV */
-#ifdef HAVE_LIMITS_H
-# include <limits.h>
-#endif
+#include <limits.h>
 
 #ifndef UCHAR_MAX
 # define UCHAR_MAX	0xFF
@@ -24,10 +22,10 @@ static const unsigned char *cclass(const unsigned char *p, int sub);
  */
 void
 setctypes(s, t)
-	register const char *s;
-	register int t;
+	const char *s;
+	int t;
 {
-	register int i;
+	int i;
 
 	if (t & C_IFS) {
 		for (i = 0; i < UCHAR_MAX+1; i++)
@@ -41,7 +39,7 @@ setctypes(s, t)
 void
 initctypes()
 {
-	register int c;
+	int c;
 
 	for (c = 'a'; c <= 'z'; c++)
 		ctypes[c] |= C_ALPHA;
@@ -61,10 +59,10 @@ initctypes()
 
 char *
 ulton(n, base)
-	register unsigned long n;
+	unsigned long n;
 	int base;
 {
-	register char *p;
+	char *p;
 	static char buf [20];
 
 	p = &buf[sizeof(buf)];
@@ -95,7 +93,7 @@ char *str_save(const char *s, Area *ap)
  */
 char *
 str_nsave(s, n, ap)
-	register const char *s;
+	const char *s;
 	int n;
 	Area *ap;
 {
@@ -262,7 +260,7 @@ getoptions()
 {
 	int i;
 	char m[(int) FNFLAGS + 1];
-	register char *cp = m;
+	char *cp = m;
 
 	for (i = 0; i < NELEM(options); i++)
 		if (options[i].c && Flag(i))
@@ -475,7 +473,7 @@ getn(as, ai)
 	int *ai;
 {
 	const char *s;
-	register int n;
+	int n;
 	int sawdigit = 0;
 
 	s = as;
@@ -616,7 +614,7 @@ do_gmatch(s, se, p, pe, isfile)
 	const unsigned char *se, *pe;
 	int isfile;
 {
-	register int sc, pc;
+	int sc, pc;
 	const unsigned char *prest, *psub, *pnext;
 	const unsigned char *srest;
 
@@ -748,9 +746,9 @@ do_gmatch(s, se, p, pe, isfile)
 static const unsigned char *
 cclass(p, sub)
 	const unsigned char *p;
-	register int sub;
+	int sub;
 {
-	register int c, d, not, found = 0;
+	int c, d, not, found = 0;
 	const unsigned char *orig_p = p;
 
 	if ((not = (ISMAGIC(*p) && *++p == NOT)))
@@ -830,10 +828,10 @@ qsortp(base, n, f)
 }
 
 #define	swap2(a, b)	{\
-	register void *t; t = *(a); *(a) = *(b); *(b) = t;\
+	void *t; t = *(a); *(a) = *(b); *(b) = t;\
 }
 #define	swap3(a, b, c)	{\
-	register void *t; t = *(a); *(a) = *(c); *(c) = *(b); *(b) = t;\
+	void *t; t = *(a); *(a) = *(c); *(c) = *(b); *(b) = t;\
 }
 
 static void
@@ -841,8 +839,8 @@ qsort1(base, lim, f)
 	void **base, **lim;
 	int (*f)(void *, void *);
 {
-	register void **i, **j;
-	register void **lptr, **hptr;
+	void **i, **j;
+	void **lptr, **hptr;
 	size_t n;
 	int c;
 

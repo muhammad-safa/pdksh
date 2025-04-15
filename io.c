@@ -275,7 +275,7 @@ restfd(fd, ofd)
 
 void
 openpipe(pv)
-	register int *pv;
+	int *pv;
 {
 	if (pipe(pv) < 0)
 		errorf("can't create pipe - try again");
@@ -285,7 +285,7 @@ openpipe(pv)
 
 void
 closepipe(pv)
-	register int *pv;
+	int *pv;
 {
 	close(pv[0]);
 	close(pv[1]);

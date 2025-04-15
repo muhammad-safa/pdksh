@@ -77,7 +77,7 @@ substitute(cp, f)
  */
 char **
 eval(ap, f)
-	register char **ap;
+	char **ap;
 	int f;
 {
 	XPtrV w;
@@ -122,7 +122,7 @@ evalstr(cp, f)
  */
 char *
 evalonestr(cp, f)
-	register char *cp;
+	char *cp;
 	int f;
 {
 	XPtrV w;
@@ -158,14 +158,14 @@ typedef struct SubType {
 void
 expand(cp, wp, f)
 	char *cp;		/* input word */
-	register XPtrV *wp;	/* output words */
+	XPtrV *wp;	/* output words */
 	int f;			/* DO* flags */
 {
-	register int UNINITIALIZED(c);
-	register int type;	/* expansion type */
-	register int quote = 0;	/* quoted */
+	int UNINITIALIZED(c);
+	int type;	/* expansion type */
+	int quote = 0;	/* quoted */
 	XString ds;		/* destination string */
-	register char *dp, *sp;	/* dest., source */
+	char *dp, *sp;	/* dest., source */
 	int fdo, word;		/* second pass flags; have word */
 	int doblank;		/* field spliting of parameter/command subst */
 	Expand x;		/* expansion variables */
@@ -838,11 +838,11 @@ varsub(xp, sp, word, stypep, slenp)
  */
 static int
 comsub(xp, cp)
-	register Expand *xp;
+	Expand *xp;
 	char *cp;
 {
 	Source *s, *sold;
-	register struct op *t;
+	struct op *t;
 	struct shf *shf;
 
 	s = pushs(SSTRING, ATEMP);
@@ -856,7 +856,7 @@ comsub(xp, cp)
 
 	if (t != NULL && t->type == TCOM && /* $(<file) */
 	    *t->args == NULL && *t->vars == NULL && t->ioact != NULL) {
-		register struct ioword *io = *t->ioact;
+		struct ioword *io = *t->ioact;
 		char *name;
 
 		if ((io->flag&IOTYPE) != IOREAD)
@@ -890,12 +890,12 @@ comsub(xp, cp)
 
 static char *
 trimsub(str, pat, how)
-	register char *str;
+	char *str;
 	char *pat;
 	int how;
 {
-	register char *end = strchr(str, 0);
-	register char *p, c;
+	char *end = strchr(str, 0);
+	char *p, c;
 
 	switch (how&0xff) {	/* UCHAR_MAX maybe? */
 	  case '#':		/* shortest at begining */
@@ -944,7 +944,7 @@ trimsub(str, pat, how)
 static void
 glob(cp, wp, markdirs)
 	char *cp;
-	register XPtrV *wp;
+	XPtrV *wp;
 	int markdirs;
 {
 	int oldsize = XPsize(*wp);
@@ -986,10 +986,10 @@ globit(xs, xpp, sp, wp, check)
 	XString *xs;		/* dest string */
 	char **xpp;		/* ptr to dest end */
 	char *sp;		/* source path */
-	register XPtrV *wp;	/* output list */
+	XPtrV *wp;	/* output list */
 	int check;		/* GF_* flags */
 {
-	register char *np;	/* next source component */
+	char *np;	/* next source component */
 	char *xp = *xpp;
 	char *se;
 	char odirsep;
@@ -1264,7 +1264,7 @@ static char *
 homedir(name)
 	char *name;
 {
-	register struct tbl *ap;
+	struct tbl *ap;
 
 	ap = tenter(&homedirs, name, hash(name));
 	if (!(ap->flag & ISSET)) {

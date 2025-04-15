@@ -567,7 +567,7 @@ assign_check(es, op, vasn)
 static struct tbl *
 tempvar()
 {
-	register struct tbl *vp;
+	struct tbl *vp;
 
 	vp = (struct tbl*) alloc(sizeof(struct tbl), ATEMP);
 	vp->flag = ISSET|INTEGER;

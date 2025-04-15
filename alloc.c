@@ -128,7 +128,7 @@ static void *asplit(Area *ap, Block *bp, Cell *fp, Cell *fpp, int cells);
 /* create empty Area */
 Area *
 ainit(ap)
-	register Area *ap;
+	Area *ap;
 {
 	ap->freelist = &aempty;
 	ACHECK(ap);
@@ -138,10 +138,10 @@ ainit(ap)
 /* free all object in Area */
 void
 afreeall(ap)
-	register Area *ap;
+	Area *ap;
 {
-	register Block *bp;
-	register Block *tmp;
+	Block *bp;
+	Block *tmp;
 
 	ACHECK(ap);
 	bp = ap->freelist;
@@ -160,7 +160,7 @@ afreeall(ap)
 void *
 alloc(size, ap)
 	size_t size;
-	register Area *ap;
+	Area *ap;
 {
 	int cells, acells;
 	Block *bp = 0;
@@ -261,7 +261,7 @@ asplit(ap, bp, fp, fpp, cells)
 /* change size of object -- like realloc */
 void *
 aresize(ptr, size, ap)
-	register void *ptr;
+	void *ptr;
 	size_t size;
 	Area *ap;
 {
@@ -398,11 +398,11 @@ aresize(ptr, size, ap)
 void
 afree(ptr, ap)
 	void *ptr;
-	register Area *ap;
+	Area *ap;
 {
-	register Block *bp;
-	register Cell *fp, *fpp;
-	register Cell *dp = (Cell*)ptr;
+	Block *bp;
+	Cell *fp, *fpp;
+	Cell *dp = (Cell*)ptr;
 
 	ACHECK(ap);
 	if (ptr == 0)
@@ -575,7 +575,7 @@ acheck(ap)
 
 void
 aprint(ap, ptr, size)
-	register Area *ap;
+	Area *ap;
 	void *ptr;
 	size_t size;
 {

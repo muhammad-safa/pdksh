@@ -100,9 +100,9 @@ yylex(cf)
 {
 	Lex_state states[STATE_BSIZE], *statep;
 	State_info state_info;
-	register int c, state;
+	int c, state;
 	XString ws;		/* expandable output word */
-	register char *wp;	/* output word pointer */
+	char *wp;	/* output word pointer */
 	char *sp, *dp;
 	int c2;
 
@@ -738,7 +738,7 @@ Done:
 		if ((cf & ALIAS) && (p = tsearch(&aliases, ident, h))
 		    && (p->flag & ISSET))
 		{
-			register Source *s;
+			Source *s;
 
 			for (s = source; s->type == SALIAS; s = s->next)
 				if (s->u.tblp == p)
@@ -760,7 +760,7 @@ Done:
 static void
 gethere()
 {
-	register struct ioword **p;
+	struct ioword **p;
 
 	for (p = heres; p < herep; p++)
 		readhere(*p);
@@ -775,7 +775,7 @@ static void
 readhere(iop)
 	struct ioword *iop;
 {
-	register int c;
+	int c;
 	char *volatile eof;
 	char *eofp;
 	int skiptabs;
@@ -855,7 +855,7 @@ pushs(type, areap)
 	int type;
 	Area *areap;
 {
-	register Source *s;
+	Source *s;
 
 	s = (Source *) alloc(sizeof(Source), areap);
 	s->type = type;
@@ -878,8 +878,8 @@ pushs(type, areap)
 static int
 getsc__()
 {
-	register Source *s = source;
-	register int c;
+	Source *s = source;
+	int c;
 
 	while ((c = *s->str++) == 0) {
 		s->str = NULL;		/* return 0 for EOF by default */

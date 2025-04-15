@@ -80,7 +80,7 @@ typedef struct XPtrV {
 } XPtrV;
 
 #define	XPinit(x, n) do { \
-			register void **vp__; \
+			void **vp__; \
 			vp__ = (void**) alloc(sizeofN(void*, n), ATEMP); \
 			(x).cur = (x).beg = vp__; \
 			(x).end = vp__ + n; \

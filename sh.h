@@ -66,12 +66,7 @@ extern int errno;
 # endif /* L_SET */
 #endif /* !SEEK_SET */
 
-/* Some machines (eg, FreeBSD 1.1.5) define CLK_TCK in limits.h
- * (ksh_limval.h assumes limits has been included, if available)
- */
-#ifdef HAVE_LIMITS_H
-# include <limits.h>
-#endif /* HAVE_LIMITS_H */
+#include <limits.h>
 
 #include <signal.h>
 #ifdef	NSIG

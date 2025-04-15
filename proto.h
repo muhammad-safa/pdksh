@@ -83,7 +83,7 @@ void 	hist_init(Source *s);
 void 	hist_finish(void);
 void	histsave(int lno, const char *cmd, int dowrite);
 #ifdef HISTORY
-int 	c_fc	 (register char **wp);
+int 	c_fc	 (char **wp);
 void	sethistsize(int n);
 void	sethistfile(const char *name);
 # ifdef EASY_HISTORY

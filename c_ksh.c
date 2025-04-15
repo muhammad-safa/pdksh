@@ -311,7 +311,7 @@ c_print(wp)
 	Xinit(xs, xp, 128, ATEMP);
 
 	while (*wp != NULL) {
-		register int c;
+		int c;
 		s = *wp;
 		while ((c = *s++) != '\0') {
 			Xcheck(xs, xp);
@@ -989,8 +989,8 @@ int
 c_unalias(wp)
 	char **wp;
 {
-	register struct table *t = &aliases;
-	register struct tbl *ap;
+	struct table *t = &aliases;
+	struct tbl *ap;
 	int rv = 0, all = 0;
 	int optc;
 
@@ -1379,7 +1379,7 @@ c_bind(wp)
 	char **wp;
 {
 	int rv = 0, macro = 0, list = 0;
-	register char *cp;
+	char *cp;
 	int optc;
 
 	while ((optc = ksh_getopt(wp, &builtin_opt, "lm")) != EOF)

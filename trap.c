@@ -87,7 +87,7 @@ gettrap(name, igncase)
 	int igncase;
 {
 	int i;
-	register Trap *p;
+	Trap *p;
 
 	if (digit(*name)) {
 		int n;
@@ -182,7 +182,7 @@ runtraps(flag)
 	int flag;
 {
 	int i;
-	register Trap *p;
+	Trap *p;
 
 #ifdef KSH
 	if (ksh_tmout_state == TMOUT_LEAVING) {
