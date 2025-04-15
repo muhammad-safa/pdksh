@@ -1079,10 +1079,7 @@ histinsert(s, lno, line)
  *	If it has - then some other shell has written to it
  *	and we should read those commands to update our history
  */
-static void
-writehistfile(lno, cmd)
-	int lno;
-	char *cmd;
+static void writehistfile(int lno, char *cmd)
 {
 	int	sizenow;
 	unsigned char	*base;
@@ -1137,8 +1134,7 @@ bad:
 	hist_finish();
 }
 
-void
-hist_finish()
+void hist_finish()
 {
 	(void) flock(histfd, LOCK_UN);
 	(void) close(histfd);
@@ -1148,9 +1144,7 @@ hist_finish()
 /*
  *	add magic to the history file
  */
-static int
-sprinkle(fd)
-	int fd;
+static int sprinkle(int fd)
 {
 	static char mag[] = { HMAGIC1, HMAGIC2 };
 
@@ -1161,24 +1155,19 @@ sprinkle(fd)
 #else /* HISTORY */
 
 /* No history to be compiled in: dummy routines to avoid lots more ifdefs */
-void
-init_histvec()
+void init_histvec()
 {
 }
-void
-hist_init(s)
-	Source *s;
+
+void hist_init(Source *s)
 {
 }
-void
-hist_finish()
+
+void hist_finish()
 {
 }
-void
-histsave(lno, cmd, dowrite)
-	int lno;
-	const char *cmd;
-	int dowrite;
+
+void histsave(int lno, const char *cmd, int dowrite)
 {
 	errorf("history not enabled");
 }
