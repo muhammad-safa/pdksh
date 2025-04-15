@@ -68,7 +68,7 @@ typedef char * XStringP;
 #define	Xsavepos(xs, xp) ((xp) - (xs).beg)
 #define	Xrestpos(xs, xp, n) ((xs).beg + (n))
 
-char *	Xcheck_grow_	ARGS((XString *xsp, char *xp, int more));
+char *	Xcheck_grow_(XString *xsp, char *xp, int more);
 
 /*
  * expandable vector of generic pointers

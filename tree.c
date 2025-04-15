@@ -7,13 +7,13 @@
 #define INDENT	4
 
 #define tputc(c, shf)	shf_putchar(c, shf);
-static void 	ptree ARGS((struct op *t, int indent, struct shf *f));
-static void 	pioact ARGS((struct shf *f, int indent, struct ioword *iop));
-static void	tputC ARGS((int c, struct shf *shf));
-static void	tputS ARGS((char *wp, struct shf *shf));
-static void	vfptreef ARGS((struct shf *shf, int indent, const char *fmt, va_list va));
-static struct ioword **iocopy ARGS((struct ioword **iow, Area *ap));
-static void     iofree ARGS((struct ioword **iow, Area *ap));
+static void 	ptree(struct op *t, int indent, struct shf *f);
+static void 	pioact(struct shf *f, int indent, struct ioword *iop);
+static void	tputC(int c, struct shf *shf);
+static void	tputS(char *wp, struct shf *shf);
+static void	vfptreef(struct shf *shf, int indent, const char *fmt, va_list va);
+static struct ioword **iocopy(struct ioword **iow, Area *ap);
+static void     iofree(struct ioword **iow, Area *ap);
 
 /*
  * print a command tree

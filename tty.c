@@ -117,7 +117,7 @@ tty_init(init_ttystate)
 		 * so force it to be done here...
 		 */
 		{
-			extern char *ttyname ARGS((int));
+			extern char *ttyname(int);
 			char *s = ttyname(isatty(2) ? 2 : 0);
 			int fd;
 

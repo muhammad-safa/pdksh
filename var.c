@@ -22,7 +22,7 @@ static void	unspecial	ARGS((const char *name));
 static void	getspec		ARGS((struct tbl *vp));
 static void	setspec		ARGS((struct tbl *vp));
 static void	unsetspec	ARGS((struct tbl *vp));
-static struct tbl *arraysearch  ARGS((struct tbl *, int));
+static struct tbl *arraysearch (struct tbl *, int);
 
 /*
  * create a new block for function calls and simple commands

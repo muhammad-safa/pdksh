@@ -99,15 +99,13 @@ extern int errno;
 # define KSH_SA_FLAGS	0
 #endif /* SA_INTERRUPT */
 
-typedef	RETSIGTYPE (*handler_t) ARGS((int));	/* signal handler */
+typedef	RETSIGTYPE (*handler_t)(int);	/* signal handler */
 
 #ifdef USE_FAKE_SIGACT
 # include "sigact.h"			/* use sjg's fake sigaction() */
 #endif
 
-#ifdef HAVE_PATHS_H
-# include <paths.h>
-#endif /* HAVE_PATHS_H */
+#include <paths.h>
 #ifdef _PATH_DEFPATH
 # define DEFAULT__PATH _PATH_DEFPATH
 #else /* _PATH_DEFPATH */

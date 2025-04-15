@@ -45,7 +45,7 @@
  */
 
 #ifdef S_ISLNK
-static char	*do_phys_path ARGS((XString *xsp, char *xp, const char *path));
+static char	*do_phys_path(XString *xsp, char *xp, const char *path);
 #endif /* S_ISLNK */
 
 /*

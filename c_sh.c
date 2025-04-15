@@ -7,7 +7,7 @@
 #include "ksh_time.h"
 #include "ksh_times.h"
 
-static	char *clocktos ARGS((clock_t t));
+static	char *clocktos(clock_t t);
 
 
 /* :, false and true */
@@ -857,8 +857,8 @@ c_builtin(wp)
 	return 0;
 }
 
-extern	int c_test ARGS((char **wp));		/* in c_test.c */
-extern	int c_ulimit ARGS((char **wp));		/* in c_ulimit.c */
+extern	int c_test(char **wp);		/* in c_test.c */
+extern	int c_ulimit(char **wp);		/* in c_ulimit.c */
 
 /* A leading = means assignments before command are kept;
  * a leading * means a POSIX special builtin;

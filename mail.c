@@ -30,9 +30,9 @@ static mbox_t	mbox;
 static time_t	mlastchkd;	/* when mail was last checked */
 static time_t	mailcheck_interval;
 
-static void     munset      ARGS((mbox_t *mlist)); /* free mlist and mval */
-static mbox_t * mballoc     ARGS((char *p, char *m)); /* allocate a new mbox */
-static void     mprintit    ARGS((mbox_t *mbp));
+static void     munset     (mbox_t *mlist); /* free mlist and mval */
+static mbox_t * mballoc    (char *p, char *m); /* allocate a new mbox */
+static void     mprintit   (mbox_t *mbp);
 
 void
 mcheck()

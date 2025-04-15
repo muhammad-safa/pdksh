@@ -1127,7 +1127,7 @@ struct kill_info {
 	int num_width;
 	int name_width;
 };
-static char *kill_fmt_entry ARGS((void *arg, int i, char *buf, int buflen));
+static char *kill_fmt_entry(void *arg, int i, char *buf, int buflen);
 
 /* format a single kill item */
 static char *

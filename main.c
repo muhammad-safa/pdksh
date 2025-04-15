@@ -14,9 +14,9 @@ extern char **environ;
  * global data
  */
 
-static void	reclaim ARGS((void));
-static void	remove_temps ARGS((struct temp *tp));
-static int	is_restricted ARGS((char *name));
+static void	reclaim(void);
+static void	remove_temps(struct temp *tp);
+static int	is_restricted(char *name);
 
 /*
  * shell initialization
@@ -78,12 +78,9 @@ static const char *const initcoms [] = {
 	NULL
 };
 
-int
-main(argc, argv)
-	int argc;
-	register char **argv;
+int main(int argc, char **argv)
 {
-	register int i;
+	int i;
 	int argi;
 	Source *s;
 	struct block *l;
@@ -148,7 +145,7 @@ main(argc, argv)
 	init_histvec();
 
 	def_path = DEFAULT__PATH;
-#if defined(HAVE_CONFSTR) && defined(_CS_PATH)
+#if defined(_CS_PATH)
 	{
 		size_t len = confstr(_CS_PATH, (char *) 0, 0);
 		char *new;
@@ -158,7 +155,7 @@ main(argc, argv)
 			def_path = new;
 		}
 	}
-#endif /* HAVE_CONFSTR && _CS_PATH */
+#endif /* _CS_PATH */
 
 	/* Set PATH to def_path (will set the path global variable).
 	 * (import of environment below will probably change this setting).

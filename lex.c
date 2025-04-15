@@ -50,16 +50,16 @@ struct State_info {
 };
 
 
-static void	readhere ARGS((struct ioword *iop));
-static int	getsc__ ARGS((void));
-static void	getsc_line ARGS((Source *s));
-static int	getsc_bn ARGS((void));
-static char	*get_brace_var ARGS((XString *wsp, char *wp));
-static int	arraysub ARGS((char **strp));
-static const char *ungetsc ARGS((int c));
-static void	gethere ARGS((void));
-static Lex_state *push_state_ ARGS((State_info *si, Lex_state *old_end));
-static Lex_state *pop_state_ ARGS((State_info *si, Lex_state *old_end));
+static void	readhere(struct ioword *iop);
+static int	getsc__(void);
+static void	getsc_line(Source *s);
+static int	getsc_bn(void);
+static char	*get_brace_var(XString *wsp, char *wp);
+static int	arraysub(char **strp);
+static const char *ungetsc(int c);
+static void	gethere(void);
+static Lex_state *push_state_(State_info *si, Lex_state *old_end);
+static Lex_state *pop_state_(State_info *si, Lex_state *old_end);
 
 static int backslash_skip;
 static int ignore_backslash_newline;

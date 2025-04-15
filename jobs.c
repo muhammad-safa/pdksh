@@ -54,8 +54,8 @@
 #  define getpgID()	getpgrp()
 # endif
 # if defined(TTY_PGRP) && !defined(HAVE_TCSETPGRP)
-int tcsetpgrp ARGS((int fd, pid_t grp));
-int tcgetpgrp ARGS((int fd));
+int tcsetpgrp(int fd, pid_t grp);
+int tcgetpgrp(int fd);
 
 int
 tcsetpgrp(fd, grp)
@@ -208,18 +208,18 @@ static pid_t		our_pgrp;
 static int const	tt_sigs[] = { SIGTSTP, SIGTTIN, SIGTTOU };
 #endif /* TTY_PGRP */
 
-static void		j_set_async ARGS((Job *j));
-static void		j_startjob ARGS((Job *j));
-static int		j_waitj ARGS((Job *j, int flags, const char *where));
-static RETSIGTYPE	j_sigchld ARGS((int sig));
-static void		j_print ARGS((Job *j, int how, struct shf *shf));
-static Job		*j_lookup ARGS((const char *cp, int *ecodep));
-static Job		*new_job ARGS((void));
-static Proc		*new_proc ARGS((void));
-static void		check_job ARGS((Job *j));
-static void		put_job ARGS((Job *j, int where));
-static void		remove_job ARGS((Job *j, const char *where));
-static int		kill_job ARGS((Job *j, int sig));
+static void		j_set_async(Job *j);
+static void		j_startjob(Job *j);
+static int		j_waitj(Job *j, int flags, const char *where);
+static RETSIGTYPE	j_sigchld(int sig);
+static void		j_print(Job *j, int how, struct shf *shf);
+static Job		*j_lookup(const char *cp, int *ecodep);
+static Job		*new_job(void);
+static Proc		*new_proc(void);
+static void		check_job(Job *j);
+static void		put_job(Job *j, int where);
+static void		remove_job(Job *j, const char *where);
+static int		kill_job(Job *j, int sig);
 
 /* initialize job control */
 void

@@ -38,16 +38,16 @@ typedef struct Expand {
 #define IFS_WS		1	/* have seen IFS white-space */
 #define IFS_NWS		2	/* have seen IFS non-white-space */
 
-static	int	varsub ARGS((Expand *xp, char *sp, char *word, int *stypep, int *slenp));
-static	int	comsub ARGS((Expand *xp, char *cp));
-static	char   *trimsub ARGS((char *str, char *pat, int how));
-static	void	glob ARGS((char *cp, XPtrV *wp, int markdirs));
+static	int	varsub(Expand *xp, char *sp, char *word, int *stypep, int *slenp);
+static	int	comsub(Expand *xp, char *cp);
+static	char   *trimsub(char *str, char *pat, int how);
+static	void	glob(char *cp, XPtrV *wp, int markdirs);
 static	void	globit ARGS((XString *xs, char **xpp, char *sp, XPtrV *wp,
 			     int check));
 static char	*maybe_expand_tilde ARGS((char *p, XString *dsp, char **dpp,
 					  int isassign));
-static	char   *tilde ARGS((char *acp));
-static	char   *homedir ARGS((char *name));
+static	char   *tilde(char *acp);
+static	char   *homedir(char *name);
 #ifdef BRACE_EXPAND
 static void	alt_expand ARGS((XPtrV *wp, char *start, char *exp_start,
 				 char *end, int fdo));
@@ -1124,7 +1124,7 @@ globit(xs, xpp, sp, wp, check)
 /* Check if p contains something that needs globbing; if it does, 0 is
  * returned; if not, p is copied into xs/xp after stripping any MAGICs
  */
-static int	copy_non_glob ARGS((XString *xs, char **xpp, char *p));
+static int	copy_non_glob(XString *xs, char **xpp, char *p);
 static int
 copy_non_glob(xs, xpp, p)
 	XString *xs;

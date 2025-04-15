@@ -16,7 +16,7 @@
 #endif /* TIME_WITH_SYS_TIME */
 
 #ifndef TIME_DECLARED
-extern time_t time ARGS((time_t *));
+extern time_t time(time_t *);
 #endif
 
 #ifndef CLK_TCK

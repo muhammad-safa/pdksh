@@ -128,14 +128,14 @@ enum error_type { ET_UNEXPECTED, ET_BADLIT, ET_RECURSIVE,
 
 static void        evalerr  ARGS((Expr_state *es, enum error_type type,
 				  const char *str)) GCC_FUNC_ATTR(noreturn);
-static struct tbl *evalexpr ARGS((Expr_state *es, enum prec prec));
-static void        token    ARGS((Expr_state *es));
+static struct tbl *evalexpr(Expr_state *es, enum prec prec);
+static void        token   (Expr_state *es);
 static struct tbl *do_ppmm  ARGS((Expr_state *es, enum token op,
 				  struct tbl *vasn, bool_t is_prefix));
 static void	   assign_check ARGS((Expr_state *es, enum token op,
 				      struct tbl *vasn));
-static struct tbl *tempvar  ARGS((void));
-static struct tbl *intvar   ARGS((Expr_state *es, struct tbl *vp));
+static struct tbl *tempvar (void);
+static struct tbl *intvar  (Expr_state *es, struct tbl *vp);
 
 /*
  * parse and evalute expression

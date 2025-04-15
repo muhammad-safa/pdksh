@@ -54,7 +54,7 @@ inittraps()
 }
 
 #ifdef KSH
-static RETSIGTYPE alarm_catcher ARGS((int sig));
+static RETSIGTYPE alarm_catcher(int sig);
 
 void
 alarm_init()

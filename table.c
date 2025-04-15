@@ -6,8 +6,8 @@
 
 #define	INIT_TBLS	8	/* initial table size (power of 2) */
 
-static void     texpand     ARGS((struct table *tp, int nsize));
-static int      tnamecmp    ARGS((void *p1, void *p2));
+static void     texpand    (struct table *tp, int nsize);
+static int      tnamecmp   (void *p1, void *p2);
 
 
 unsigned int
@@ -190,7 +190,7 @@ tsort(tp)
 
 #ifdef PERF_DEBUG /* performance debugging */
 
-void tprintinfo ARGS((struct table *tp));
+void tprintinfo(struct table *tp);
 
 void
 tprintinfo(tp)
