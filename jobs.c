@@ -446,10 +446,8 @@ exchild(t, flags, close_fd)
 				setsig(&sigtraps[tt_sigs[i]], SIG_DFL,
 					SS_RESTORE_DFL|SS_FORCE);
 		}
-#ifdef HAVE_NICE
 		if (Flag(FBGNICE) && (flags & XBGND))
 			nice(4);
-#endif /* HAVE_NICE */
 		if ((flags & XBGND) && !Flag(FMONITOR)) {
 			setsig(&sigtraps[SIGINT], SIG_IGN,
 				SS_RESTORE_IGN|SS_FORCE);

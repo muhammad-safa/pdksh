@@ -882,44 +882,6 @@ AC_CHECK_NORETURN() {
 
 
 #
-# AC_C_CONST checks to see if the compiler supports the const keyword
-#
-AC_C_CONST () {
-    cat > ngc$$.c << EOF
-const char me=1;
-EOF
-    LOGN "checking for \"const\" keyword"
-
-    if __MAKEDOTO ngc$$.c; then
-	rc=0
-    else
-	AC_DEFINE 'const' '/**/'
-	rc=1
-    fi
-    __remove ngc$$.c
-    return $rc
-}
-
-
-#
-# AC_C_VOLATILE checks to see if the compiler supports the volatile keyword
-#
-AC_C_VOLATILE () {
-    echo 'f() { volatile char me=1; }' > ngc$$.c
-    LOGN "checking for \"volatile\" keyword"
-
-    if __MAKEDOTO ngc$$.c; then
-	rc=0
-    else
-	AC_DEFINE 'volatile' '/**/'
-	rc=1
-    fi
-    __remove ngc$$.c
-    return $rc
-}
-
-
-#
 # AC_C_INLINE checks to see if compiler supports the inline keyword
 #
 AC_C_INLINE() {

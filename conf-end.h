@@ -19,22 +19,10 @@
  * if you don't have mmap() you can't use Peter Collinson's history
  * mechanism.  If that is the case, then define EASY_HISTORY
  */
-#if defined(HISTORY) && (!defined(COMPLEX_HISTORY) || !defined(HAVE_MMAP) || !defined(HAVE_FLOCK))
+#if defined(HISTORY) && (!defined(COMPLEX_HISTORY) || !defined(HAVE_FLOCK))
 # undef COMPLEX_HISTORY
 # define EASY_HISTORY			/* sjg's trivial history file */
 #endif
-
-/* pdksh assumes system calls return EINTR if a signal happened (this so
- * the signal handler doesn't have to longjmp()).  I don't know if this
- * happens (or can be made to happen) with sigset() et. al. (the bsd41 signal
- * routines), so, the autoconf stuff checks what they do and defines
- * SIGNALS_DONT_INTERRUPT if signals don't interrupt read().
- * If SIGNALS_DONT_INTERRUPT isn't defined and your compiler chokes on this,
- * delete the hash in front of the error (and file a bug report).
- */
-#ifdef SIGNALS_DONT_INTERRUPT
-  # error pdksh needs interruptable system calls.
-#endif /* SIGNALS_DONT_INTERRUPT */
 
 #ifdef HAVE_GCC_FUNC_ATTR
 # define GCC_FUNC_ATTR(x)	__attribute__((x))

@@ -15,9 +15,6 @@
 /* Define as the return value of signal handlers (0 or ).  */
 #undef RETSIGVAL
 
-/* Define if signals don't interrupt read() */
-#undef SIGNALS_DONT_INTERRUPT
-
 /* Define to nothing if compiler doesn't like the volatile keyword */
 #undef volatile
 

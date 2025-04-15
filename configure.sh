@@ -63,11 +63,6 @@ HISTORY=COMPLEX
 AC_INIT $TARGET
 unset _MK_LIBRARIAN
 
-AC_C_CONST
-AC_C_VOLATILE
-UNDEFINED=1 AC_CHECK_TYPE void\* || AC_DEFINE 'void' 'int'
-
-AC_CHECK_HEADERS sys/wait.h
 AC_CHECK_HEADERS termios.h termio.h
 
 AC_CHECK_FIELD stat st_rdev sys/types.h sys/stat.h unistd.h
@@ -75,8 +70,6 @@ AC_CHECK_FIELD stat st_rdev sys/types.h sys/stat.h unistd.h
 # check for __attribute__(noreturn), which means that __attribute__ works
 AC_CHECK_NORETURN && AC_DEFINE 'HAVE_GCC_FUNC_ATTR' '1'
 
-AC_CHECK_FUNCS 'mmap(0, 0, 0, 0, 0, 0)' sys/mman.h
-AC_CHECK_FUNCS nice
 AC_CHECK_FUNCS flock
 AC_CHECK_FUNCS strlcpy
 AC_CHECK_FUNCS strlcat
@@ -131,30 +124,6 @@ else
     rm -f ngc$$ ngc$$.c
     AC_FAIL "cannot define SIZEOF_INT or SIZEOF_LONG"
 fi
-
-LOGN "Do signals interrupt a read? "
-cat > ngc$$.c << EOF
-main()
-{
-    char bfr[8];
-
-    alarm(1);
-    return (read(0, bfr, sizeof bfr) == sizeof bfr) ? 0 : 1;
-}
-EOF
-
-$AC_CC -o ngc$$ ngc$$.c
-
-(sleep 2; echo "LONG INPUT") | ./ngc$$
-
-if [ "$?" -ne 0 ]; then
-    LOG "(yes)";
-else
-    AC_DEFINE 'SIGNALS_DONT_INTERRUPT' '1'
-    LOG "(no)"
-fi
-rm -f ngc$$ ngc$$.c
-
 
 # add in the various flags that can be passed on in
 

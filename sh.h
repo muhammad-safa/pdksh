@@ -524,13 +524,7 @@ EXTERN	int	x_cols I__(80);	/* tty columns */
 #define CBRACE	'}'
 
 /* Determine the location of the system (common) profile */
-#ifndef KSH_SYSTEM_PROFILE
-# ifdef __NeXT
-#  define KSH_SYSTEM_PROFILE "/etc/profile.std"
-# else /* __NeXT */
-#  define KSH_SYSTEM_PROFILE "/etc/profile"
-# endif /* __NeXT */
-#endif /* KSH_SYSTEM_PROFILE */
+#define KSH_SYSTEM_PROFILE "/etc/profile"
 
 /* Used by v_evaluate() and setstr() to control action when error occurs */
 #define KSH_UNWIND_ERROR	0	/* unwind the stack (longjmp) */
