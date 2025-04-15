@@ -93,7 +93,6 @@ AC_CHECK_FIELD stat st_rdev sys/types.h sys/stat.h unistd.h
 AC_CHECK_NORETURN && AC_DEFINE 'HAVE_GCC_FUNC_ATTR' '1'
 
 AC_CHECK_FUNCS 'mmap(0, 0, 0, 0, 0, 0)' sys/mman.h
-AC_CHECK_FUNCS 'setrlimit'
 AC_CHECK_FUNCS tcsetpgrp 
 AC_CHECK_FUNCS getcwd
 AC_CHECK_FUNCS nice
