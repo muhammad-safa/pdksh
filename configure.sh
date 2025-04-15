@@ -87,35 +87,12 @@ AC_CHECK_FIELD stat st_rdev sys/types.h sys/stat.h unistd.h
 AC_CHECK_NORETURN && AC_DEFINE 'HAVE_GCC_FUNC_ATTR' '1'
 
 AC_CHECK_FUNCS 'mmap(0, 0, 0, 0, 0, 0)' sys/mman.h
-AC_CHECK_FUNCS tcsetpgrp 
 AC_CHECK_FUNCS nice
-AC_CHECK_FUNCS wait3
 AC_CHECK_FUNCS flock
 AC_CHECK_FUNCS strlcpy
 AC_CHECK_FUNCS strlcat
 
 test -d /dev/fd/0 && AC_DEFINE 'HAVE_DEV_FD' '1'
-
-LOGN "checking process group type "
-if AC_QUIET AC_CHECK_FUNCS 'setpgrp\(0,0\)' unistd.h; then
-    # bsd or posix; getpgrp() will tell the difference
-    if AC_QUIET AC_CHECK_FUNCS 'getpgrp\(0\)' unistd.h; then
-	LOG "(bsd)"
-	AC_DEFINE 'BSD_PGRP' '1'
-    else
-	LOG "(posix)"
-	AC_DEFINE 'POSIX_PGRP' '1'
-    fi
-elif AC_QUIET AC_CHECK_FUNCS 'setpgid\(0,0\)' unistd.h; then
-    LOG "(posix)"
-    AC_DEFINE 'POSIX_PGRP' '1'
-elif AC_QUIET AC_CHECK_FUNCS 'setpgrp\(\)' unistd.h; then
-    LOG "(sysV)"
-    AC_DEFINE 'SYSV_PGRP' '1'
-else
-    LOG "(none)"
-    AC_DEFINE 'NO_PGRP' '1'
-fi
 
 LOGN "checking whether #! script headers work "
 PGM_FALSE=`acLookFor false`

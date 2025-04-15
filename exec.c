@@ -417,8 +417,7 @@ execute(t, flags)
 #endif
 		restoresigs();
 		cleanup_proc_env();
-		/* XINTACT bit is for OS2 */
-		ksh_execve(t->str, t->args, ap, (flags & XINTACT) ? 1 : 0);
+		execve(t->str, t->args, ap);
 		if (errno == ENOEXEC)
 			scriptexec(t, ap);
 		else
@@ -804,7 +803,7 @@ scriptexec(tp, ap)
 #endif	/* SHARPBANG */
 	*tp->args = shell;
 
-	ksh_execve(tp->args[0], tp->args, ap, 0);
+	execve(tp->args[0], tp->args, ap);
 
 	/* report both the program that was run and the bogus shell */
 	errorf("%s: %s: %s", tp->str, shell, strerror(errno));

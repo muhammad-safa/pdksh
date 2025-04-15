@@ -10,11 +10,6 @@
  * The interface to the rest of the shell should probably be changed
  * to allow use of vfork() when available but that would be way too much
  * work :)
- *
- * Notes regarding the copious ifdefs:
- *	- TTY_PGRP defined iff JOBS is defined - defined if there are tty
- *	  process groups
- *	- NEED_PGRP_SYNC defined iff JOBS is defined - see comment below
  */
 
 #include <sys/stat.h>
@@ -44,33 +39,7 @@
 # endif /* _SC_CHILD_MAX */
 #endif /* !CHILD_MAX */
 
-#if defined(HAVE_TCSETPGRP) || defined(TIOCSPGRP)
-# define TTY_PGRP
-#endif
-#ifdef BSD_PGRP
-# define setpgid	setpgrp
-# define getpgID()	getpgrp(0)
-#else
-# define getpgID()	getpgrp()
-#endif
-#if defined(TTY_PGRP) && !defined(HAVE_TCSETPGRP)
-int tcsetpgrp(int fd, pid_t grp);
-int tcgetpgrp(int fd);
-
-int tcsetpgrp(int fd, pid_t grp)
-{
-	return ioctl(fd, TIOCSPGRP, &grp);
-}
-
-int tcgetpgrp(int fd)
-{
-	int r, grp;
-
-	if ((r = ioctl(fd, TIOCGPGRP, &grp)) < 0)
-		return r;
-	return grp;
-}
-# endif /* !HAVE_TCSETPGRP && TIOCSPGRP */
+#define TTY_PGRP
 
 /* End of system configuration stuff */
 
@@ -132,10 +101,8 @@ struct job {
 #ifdef KSH
 	Coproc_id coproc_id;	/* 0 or id of coprocess output pipe */
 #endif /* KSH */
-#ifdef TTY_PGRP
 	TTY_state ttystate;	/* saved tty state for stopped jobs */
 	pid_t	saved_ttypgrp;	/* saved tty process group for stopped jobs */
-#endif /* TTY_PGRP */
 };
 
 /* Flags for j_waitj() */
@@ -174,25 +141,10 @@ static int		held_sigchld;
 
 static struct shf	*shl_j;
 
-#ifdef NEED_PGRP_SYNC
-/* On some systems, the kernel doesn't count zombie processes when checking
- * if a process group is valid, which can cause problems in creating the
- * pipeline "cmd1 | cmd2": if cmd1 can die (and go into the zombie state)
- * before cmd2 is started, the kernel doesn't allow the setpgid() for cmd2
- * to succeed.  Solution is to create a pipe between the parent and the first
- * process; the first process doesn't do anything until the pipe is closed
- * and the parent doesn't close the pipe until all the processes are started.
- */
-static int		j_sync_pipe[2];
-static int		j_sync_open;
-#endif /* NEED_PGRP_SYNC */
-
-#ifdef TTY_PGRP
 static int		ttypgrp_ok;	/* set if can use tty pgrps */
 static pid_t		restore_ttypgrp = -1;
 static pid_t		our_pgrp;
 static int const	tt_sigs[] = { SIGTSTP, SIGTTIN, SIGTTOU };
-#endif /* TTY_PGRP */
 
 static void		j_set_async(Job *j);
 static void		j_startjob(Job *j);
@@ -231,7 +183,6 @@ j_init(mflagset)
 	 */
 	shl_j = shf_fdopen(2, SHF_WR, (struct shf *) 0);
 
-#ifdef TTY_PGRP
 	if (Flag(FMONITOR) || Flag(FTALKING)) {
 		int i;
 
@@ -245,7 +196,6 @@ j_init(mflagset)
 				SS_RESTORE_IGN|SS_FORCE);
 		}
 	}
-#endif /* TTY_PGRP */
 
 	/* j_change() calls tty_init() */
 	if (Flag(FMONITOR))
@@ -288,7 +238,6 @@ j_exit()
 		sleep(1);
 	j_notify();
 
-#ifdef TTY_PGRP
 	if (kshpid == procpid && restore_ttypgrp >= 0) {
 		/* Need to restore the tty pgrp to what it was when the
 		 * shell started up, so that the process that started us
@@ -300,7 +249,6 @@ j_exit()
 		tcsetpgrp(tty_fd, restore_ttypgrp);
 		setpgid(0, restore_ttypgrp);
 	}
-#endif /* TTY_PGRP */
 	if (Flag(FMONITOR)) {
 		Flag(FMONITOR) = 0;
 		j_change();
@@ -316,11 +264,10 @@ void j_change()
 		/* Don't call get_tty() 'til we own the tty process group */
 		tty_init(FALSE);
 
-#ifdef TTY_PGRP
 		/* no controlling tty, no SIGT* */
 		ttypgrp_ok = tty_fd >= 0 && tty_devtty;
 
-		if (ttypgrp_ok && (our_pgrp = getpgID()) < 0) {
+		if (ttypgrp_ok && (our_pgrp = getpgrp()) < 0) {
 			warningf(FALSE, "j_init: getpgrp() failed: %s",
 				strerror(errno));
 			ttypgrp_ok = 0;
@@ -364,7 +311,7 @@ void j_change()
 				our_pgrp = kshpid;
 			}
 		}
-# if defined(NTTYDISC) && defined(TIOCSETD) && !defined(HAVE_TERMIOS_H) && !defined(HAVE_TERMIO_H)
+#if defined(NTTYDISC) && defined(TIOCSETD) && !defined(HAVE_TERMIOS_H) && !defined(HAVE_TERMIO_H)
 		if (ttypgrp_ok) {
 			int ldisc = NTTYDISC;
 
@@ -373,14 +320,12 @@ void j_change()
 				"j_init: can't set new line discipline: %s",
 					strerror(errno));
 		}
-# endif /* NTTYDISC && TIOCSETD */
+#endif /* NTTYDISC && TIOCSETD */
 		if (!ttypgrp_ok)
 			warningf(FALSE, "warning: won't have full job control");
-#endif /* TTY_PGRP */
 		if (tty_fd >= 0)
 			get_tty(tty_fd, &tty_state);
 	} else {
-#ifdef TTY_PGRP
 		ttypgrp_ok = 0;
 		if (Flag(FTALKING))
 			for (i = NELEM(tt_sigs); --i >= 0; )
@@ -394,7 +339,6 @@ void j_change()
 						(sigtraps[tt_sigs[i]].flags & TF_ORIG_IGN) ? SIG_IGN : SIG_DFL,
 						SS_RESTORE_ORIG|SS_FORCE);
 			}
-#endif /* TTY_PGRP */
 		if (!Flag(FTALKING))
 			tty_close();
 	}
@@ -440,17 +384,6 @@ exchild(t, flags, close_fd)
 		last_proc->next = p;
 		last_proc = p;
 	} else {
-#ifdef NEED_PGRP_SYNC
-		if (j_sync_open) {	/* should never happen */
-			j_sync_open = 0;
-			closepipe(j_sync_pipe);
-		}
-		/* don't do the sync pipe business if there is no pipeline */
-		if (flags & XPIPEO) {
-			openpipe(j_sync_pipe);
-			j_sync_open = 1;
-		}
-#endif /* NEED_PGRP_SYNC */
 		j = new_job(); /* fills in j->job */
 		/* we don't consider XXCOM's foreground since they don't get
 		 * tty process group and we don't save or restore tty modes.
@@ -484,12 +417,6 @@ exchild(t, flags, close_fd)
 	if (i < 0) {
 		kill_job(j, SIGKILL);
 		remove_job(j, "fork failed");
-#ifdef NEED_PGRP_SYNC
-		if (j_sync_open) {
-			closepipe(j_sync_pipe);
-			j_sync_open = 0;
-		}
-#endif /* NEED_PGRP_SYNC */
 		sigprocmask(SIG_SETMASK, &omask, (sigset_t *) 0);
 		errorf("cannot fork - try again");
 	}
@@ -502,29 +429,6 @@ exchild(t, flags, close_fd)
 	/* job control set up */
 	if (Flag(FMONITOR) && !(flags&XXCOM)) {
 		int	dotty = 0;
-#ifdef NEED_PGRP_SYNC
-		int	first_child_sync = 0;
-#endif /* NEED_PGRP_SYNC */
-
-#ifdef NEED_PGRP_SYNC
-		if (j_sync_open) {
-			/*
-			 * The Parent closes 0, keeps 1 open 'til the whole
-			 * pipeline is started.  The First child closes 1,
-			 * keeps 0 open (reads from it).  The remaining
-			 * children just have to close 1 (parent has already
-			 * closeed 0).
-			 */
-			if (j->pgrp == 0) { /* First process */
-				close(j_sync_pipe[ischild]);
-				j_sync_pipe[ischild] = -1;
-				first_child_sync = ischild;
-			} else if (ischild) {
-				j_sync_open = 0;
-				closepipe(j_sync_pipe);
-			}
-		}
-#endif /* NEED_PGRP_SYNC */
 		if (j->pgrp == 0) {	/* First process */
 			j->pgrp = p->pid;
 			dotty = 1;
@@ -534,7 +438,6 @@ exchild(t, flags, close_fd)
 		 * condition
 		 */
 		setpgid(p->pid, j->pgrp);
-#ifdef TTY_PGRP
 		/* YYY: should this be
 		   if (ttypgrp_ok && ischild && !(flags&XBGND))
 			tcsetpgrp(tty_fd, j->pgrp);
@@ -542,17 +445,6 @@ exchild(t, flags, close_fd)
 		 */
 		if (ttypgrp_ok && dotty && !(flags & XBGND))
 			tcsetpgrp(tty_fd, j->pgrp);
-#endif /* TTY_PGRP */
-#ifdef NEED_PGRP_SYNC
-		if (first_child_sync) {
-			char c;
-			while (read(j_sync_pipe[0], &c, 1) == -1
-			       && errno == EINTR)
-				;
-			close(j_sync_pipe[0]);
-			j_sync_open = 0;
-		}
-#endif /* NEED_PGRP_SYNC */
 	}
 
 	/* used to close pipe input fd */
@@ -567,7 +459,6 @@ exchild(t, flags, close_fd)
 #endif /* KSH */
 		sigprocmask(SIG_SETMASK, &omask, (sigset_t *) 0);
 		cleanup_parents_env();
-#ifdef TTY_PGRP
 		/* If FMONITOR or FTALKING is set, these signals are ignored,
 		 * if neither FMONITOR nor FTALKING are set, the signals have
 		 * their inherited values.
@@ -577,7 +468,6 @@ exchild(t, flags, close_fd)
 				setsig(&sigtraps[tt_sigs[i]], SIG_DFL,
 					SS_RESTORE_DFL|SS_FORCE);
 		}
-#endif /* TTY_PGRP */
 #ifdef HAVE_NICE
 		if (Flag(FBGNICE) && (flags & XBGND))
 			nice(4);
@@ -610,12 +500,10 @@ exchild(t, flags, close_fd)
 	/* Ensure next child gets a (slightly) different $RANDOM sequence */
 	change_random();
 	if (!(flags & XPIPEO)) {	/* last process in a job */
-#ifdef TTY_PGRP
 		/* YYY: Is this needed? (see also YYY above)
 		   if (Flag(FMONITOR) && !(flags&(XXCOM|XBGND)))
 			tcsetpgrp(tty_fd, j->pgrp);
 		*/
-#endif /* TTY_PGRP */
 		j_startjob(j);
 #ifdef KSH
 		if (flags & XCOPROC) {
@@ -819,7 +707,6 @@ int j_resume(const char *cp, int bg)
 	if (bg)
 		j_set_async(j);
 	else {
-#ifdef TTY_PGRP
 		/* attach tty to job */
 		if (j->state == PRUNNING) {
 			if (ttypgrp_ok && (j->flags & JF_SAVEDTTY)) {
@@ -837,7 +724,6 @@ int j_resume(const char *cp, int bg)
 				return 1;
 			}
 		}
-#endif /* TTY_PGRP */
 		j->flags |= JF_FG;
 		j->flags &= ~JF_KNOWN;
 		if (j == async_job)
@@ -849,7 +735,6 @@ int j_resume(const char *cp, int bg)
 
 		if (!bg) {
 			j->flags &= ~JF_FG;
-#ifdef TTY_PGRP
 			if (ttypgrp_ok && (j->flags & JF_SAVEDTTY)) {
 				set_tty(tty_fd, &tty_state, TF_NONE);
 			}
@@ -859,7 +744,6 @@ int j_resume(const char *cp, int bg)
 					tty_fd, (int) our_pgrp,
 					strerror(errno));
 			}
-#endif /* TTY_PGRP */
 		}
 		sigprocmask(SIG_SETMASK, &omask, (sigset_t *) 0);
 		bi_errorf("cannot continue job %s: %s",
@@ -867,11 +751,9 @@ int j_resume(const char *cp, int bg)
 		return 1;
 	}
 	if (!bg) {
-#ifdef TTY_PGRP
 		if (ttypgrp_ok) {
 			j->flags &= ~(JF_SAVEDTTY | JF_SAVEDTTYPGRP);
 		}
-#endif /* TTY_PGRP */
 		rv = j_waitj(j, JW_NONE, "jw:resume");
 	}
 	sigprocmask(SIG_SETMASK, &omask, (sigset_t *) 0);
@@ -1046,12 +928,6 @@ j_startjob(j)
 		;
 	j->last_proc = p;
 
-#ifdef NEED_PGRP_SYNC
-	if (j_sync_open) {
-		j_sync_open = 0;
-		closepipe(j_sync_pipe);
-	}
-#endif /* NEED_PGRP_SYNC */
 	if (held_sigchld) {
 		held_sigchld = 0;
 		/* Don't call j_sigchld() as it may remove job... */
@@ -1104,7 +980,6 @@ j_waitj(j, flags, where)
 		int	status;
 
 		j->flags &= ~JF_FG;
-#ifdef TTY_PGRP
 		if (Flag(FMONITOR) && ttypgrp_ok && j->pgrp) {
 			/*
 			 * Save the tty's current pgrp so it can be restored
@@ -1131,7 +1006,6 @@ j_waitj(j, flags, where)
 				get_tty(tty_fd, &j->ttystate);
 			}
 		}
-#endif /* TTY_PGRP */
 		if (tty_fd >= 0) {
 			/* Only restore tty settings if job was originally
 			 * started in the foreground.  Problems can be

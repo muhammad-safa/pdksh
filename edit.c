@@ -11,10 +11,6 @@
 #define EXTERN
 #include "edit.h"
 #undef EXTERN
-#ifdef OS_SCO	/* SCO Unix 3.2v4.1 */
-# include <sys/stream.h>	/* needed for <sys/ptem.h> */
-# include <sys/ptem.h>		/* needed for struct winsize */
-#endif /* OS_SCO */
 #include <ctype.h>
 #include <sys/stat.h>
 

@@ -95,19 +95,6 @@ typedef	RETSIGTYPE (*handler_t)(int);	/* signal handler */
 # define killpg(p, s)	kill(-(p), (s))
 #endif /* !HAVE_KILLPG */
 
-/* Special cases for execve(2) */
-# if defined(OS_ISC) && defined(_POSIX_SOURCE)
-/* Kludge for ISC 3.2 (and other versions?) so programs will run correctly.  */
-#  define ksh_execve(p, av, ev, flags) \
-				do { \
-					__setostype(0); \
-					execve(p, av, ev); \
-					__setostype(1); \
-				} while (0)
-# else /* OS_ISC && _POSIX */
-#  define ksh_execve(p, av, ev, flags)	execve(p, av, ev)
-# endif /* OS_ISC && _POSIX */
-
 /* this is a hang-over from older versions of the os2 port */
 #define ksh_dupbase(fd, base) fcntl(fd, F_DUPFD, base)
 

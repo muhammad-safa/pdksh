@@ -33,21 +33,6 @@
 /* Define if signals don't interrupt read() */
 #undef SIGNALS_DONT_INTERRUPT
 
-/* Define if you have bsd versions of the setpgrp() and getpgrp() routines */
-#undef BSD_PGRP
-
-/* Define if you have POSIX versions of the setpgid() and getpgrp() routines */
-#undef POSIX_PGRP
-
-/* Define if you have sysV versions of the setpgrp() and getpgrp() routines */
-#undef SYSV_PGRP
-
-/* Define if you don't have setpgrp(), setpgid() or getpgrp() routines */
-#undef NO_PGRP
-
-/* Define to char if your compiler doesn't like the void keyword */
-#undef void
-
 /* Define to nothing if compiler doesn't like the volatile keyword */
 #undef volatile
 
@@ -89,15 +74,6 @@
 
 /* Define if you have a sane <termio.h> header file */
 #undef HAVE_TERMIO_H
-
-/* Define if the pgrp of setpgrp() can't be the pid of a zombie process */
-#undef NEED_PGRP_SYNC
-
-/* Define if you arg running SCO unix */
-#undef OS_SCO
-
-/* Define if you arg running ISC unix */
-#undef OS_ISC
 
 /* Define if you have a POSIX.1 compatiable <sys/wait.h> */
 #undef POSIX_SYS_WAIT
