@@ -54,8 +54,8 @@ static int sprinkle(int);
 # endif	/* of EASY_HISTORY */
 
 static int	hist_execute(char *cmd);
-static int	hist_replace ARGS((char **hp, const char *pat, const char *rep,
-				   int global));
+static int	hist_replace(char **hp, const char *pat, const char *rep,
+				   int global);
 static char   **hist_get(const char *str, int approx, int allow_cur);
 static char   **hist_get_newest(int allow_cur);
 static char   **hist_get_oldest();

@@ -50,8 +50,8 @@ bool_t 	x_mode	(bool_t onoff);
 int 	promptlen(const char *cp, const char **spp);
 int	x_do_comment(char *buf, int bsize, int *lenp);
 void	x_print_expansions(int nwords, char *const *words, int is_command);
-int	x_cf_glob ARGS((int flags, const char *buf, int buflen, int pos, int *startp,
-			  int *endp, char ***wordsp, int *is_commandp));
+int	x_cf_glob(int flags, const char *buf, int buflen, int pos, int *startp,
+			  int *endp, char ***wordsp, int *is_commandp);
 int	x_longest_prefix(int nwords, char *const *words);
 int	x_basename(const char *s, const char *se);
 void	x_free_words(int nwords, char **words);

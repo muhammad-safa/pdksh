@@ -92,26 +92,26 @@ void 	histappend(const char *cmd, int nl_separate);
 char **	histpos	 (void);
 int 	histN	 (void);
 int 	histnum	 (int n);
-int	findhist	ARGS((int start, int fwd, const char *str,
-			      int anchored));
+int	findhist    (int start, int fwd, const char *str,
+			      int anchored);
 #endif /* HISTORY */
 /* io.c */
-void 	errorf		ARGS((const char *fmt, ...))
+void 	errorf	(const char *fmt, ...)
 				GCC_FUNC_ATTR2(noreturn, format(printf, 1, 2));
-void 	warningf	ARGS((int fileline, const char *fmt, ...))
+void 	warningf(int fileline, const char *fmt, ...)
 				GCC_FUNC_ATTR(format(printf, 2, 3));
-void 	bi_errorf	ARGS((const char *fmt, ...))
+void 	bi_errorf(const char *fmt, ...)
 				GCC_FUNC_ATTR(format(printf, 1, 2));
-void 	internal_errorf	ARGS((int jump, const char *fmt, ...))
+void 	internal_errorf(int jump, const char *fmt, ...)
 				GCC_FUNC_ATTR(format(printf, 2, 3));
 void	error_prefix(int fileline);
-void 	shellf		ARGS((const char *fmt, ...))
+void 	shellf	(const char *fmt, ...)
 				GCC_FUNC_ATTR(format(printf, 1, 2));
-void 	shprintf	ARGS((const char *fmt, ...))
+void 	shprintf(const char *fmt, ...)
 				GCC_FUNC_ATTR(format(printf, 1, 2));
 #ifdef KSH_DEBUG
 void 	kshdebug_init_(void);
-void 	kshdebug_printf_ ARGS((const char *fmt, ...))
+void 	kshdebug_printf_(const char *fmt, ...)
 				GCC_FUNC_ATTR(format(printf, 1, 2));
 void 	kshdebug_dump_(const char *str, const void *mem, int nbytes);
 #endif /* KSH_DEBUG */
@@ -148,7 +148,7 @@ pid_t	j_async	(void);
 int 	j_stopped_running(void);
 /* lex.c */
 int 	yylex	(int cf);
-void 	yyerror		ARGS((const char *fmt, ...))
+void 	yyerror	(const char *fmt, ...)
 				GCC_FUNC_ATTR2(noreturn, format(printf, 1, 2));
 Source * pushs	(int type, Area *areap);
 void	set_prompt(int to, Source *s);
@@ -161,8 +161,8 @@ void 	mbset	(char *p);
 void 	mpset	(char *mptoparse);
 #endif /* KSH */
 /* main.c */
-int 	include		ARGS((const char *name, int argc, char **argv,
-			      int intr_ok));
+int 	include	(const char *name, int argc, char **argv,
+			      int intr_ok);
 int 	command	(const char *comm);
 int 	shell	(Source *volatile s, int volatile toplevel);
 void 	unwind	(int i) GCC_FUNC_ATTR(noreturn);
@@ -170,7 +170,7 @@ void 	newenv	(int type);
 void 	quitenv	(void);
 void	cleanup_parents_env(void);
 void	cleanup_proc_env(void);
-void 	aerror		ARGS((Area *ap, const char *msg))
+void 	aerror	(Area *ap, const char *msg)
 				GCC_FUNC_ATTR(noreturn);
 /* misc.c */
 void 	setctypes(const char *s, int t);
@@ -187,24 +187,24 @@ int 	bi_getn	(const char *as, int *ai);
 char *	strerror(int i);
 int 	gmatch	(const char *s, const char *p, int isfile);
 int	has_globbing(const char *xp, const char *xpe);
-const unsigned char *pat_scan ARGS((const unsigned char *p,
-				const unsigned char *pe, int match_sep));
+const unsigned char *pat_scan(const unsigned char *p,
+				const unsigned char *pe, int match_sep);
 void 	qsortp	(void **base, size_t n, int (*f)(void *, void *));
 int 	xstrcmp	(void *p1, void *p2);
 void	ksh_getopt_reset(Getopt *go, int);
 int	ksh_getopt(char **argv, Getopt *go, const char *options);
 void	print_value_quoted(const char *s);
-void	print_columns	ARGS((struct shf *shf, int n,
+void	print_columns(struct shf *shf, int n,
 			      char *(*func)(void *, int, char *, int),
-			      void *arg, int max_width));
+			      void *arg, int max_width);
 int	strip_nuls(char *buf, int nbytes);
 char	*str_zcpy(char *dst, const char *src, int dsize);
 int	blocking_read(int fd, char *buf, int nbytes);
 int	reset_nonblock(int fd);
 char	*ksh_get_wd(char *buf, int bsize);
 /* path.c */
-int	make_path	ARGS((const char *cwd, const char *file,
-			      char **pathlist, XString *xsp, int *phys_pathp));
+int	make_path(const char *cwd, const char *file,
+			      char **pathlist, XString *xsp, int *phys_pathp);
 void	simplify_path(char *path);
 char	*get_phys_path(const char *path);
 void	set_current_wd(char *path);

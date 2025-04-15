@@ -12,9 +12,9 @@
 
 short ctypes [UCHAR_MAX+1];	/* type bits for unsigned char */
 
-static int	do_gmatch ARGS((const unsigned char *s, const unsigned char *p,
+static int	do_gmatch(const unsigned char *s, const unsigned char *p,
 			const unsigned char *se, const unsigned char *pe,
-			int isfile));
+			int isfile);
 static const unsigned char *cclass(const unsigned char *p, int sub);
 
 /*

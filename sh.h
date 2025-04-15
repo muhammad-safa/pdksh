@@ -6,9 +6,6 @@
 
 #include "config.h"	/* system and option configuration info */
 
-#define	ARGS(args)	args	/* prototype declaration */
-
-
 /* Start of common headers */
 
 #include <fcntl.h>
