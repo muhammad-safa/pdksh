@@ -1323,8 +1323,7 @@ ungetsc(c)
 
 
 /* Called to get a char that isn't a \newline sequence. */
-static int
-getsc_bn ARGS((void))
+static int getsc_bn(void)
 {
 	int c, c2;
 

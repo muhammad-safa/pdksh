@@ -126,14 +126,14 @@ struct expr_state {
 enum error_type { ET_UNEXPECTED, ET_BADLIT, ET_RECURSIVE,
 		  ET_LVALUE, ET_RDONLY, ET_STR };
 
-static void        evalerr  ARGS((Expr_state *es, enum error_type type,
-				  const char *str)) GCC_FUNC_ATTR(noreturn);
+static void        evalerr (Expr_state *es, enum error_type type,
+				  const char *str) GCC_FUNC_ATTR(noreturn);
 static struct tbl *evalexpr(Expr_state *es, enum prec prec);
 static void        token   (Expr_state *es);
-static struct tbl *do_ppmm  ARGS((Expr_state *es, enum token op,
-				  struct tbl *vasn, bool_t is_prefix));
-static void	   assign_check ARGS((Expr_state *es, enum token op,
-				      struct tbl *vasn));
+static struct tbl *do_ppmm (Expr_state *es, enum token op,
+				  struct tbl *vasn, bool_t is_prefix);
+static void	   assign_check(Expr_state *es, enum token op,
+				      struct tbl *vasn);
 static struct tbl *tempvar (void);
 static struct tbl *intvar  (Expr_state *es, struct tbl *vp);
 

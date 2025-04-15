@@ -15,8 +15,8 @@
 # define PS4_SUBSTITUTE(s)	(s)
 #endif /* KSH */
 
-static int	comexec	 ARGS((struct op *t, struct tbl *volatile tp, char **ap,
-			      int volatile flags));
+static int	comexec(struct op *t, struct tbl *volatile tp, char **ap,
+			      int volatile flags);
 static void	scriptexec(struct op *tp, char **ap);
 static int	call_builtin(struct tbl *tp, char **wp);
 static int	iosetup(struct ioword *iop, struct tbl *tp);
@@ -26,10 +26,10 @@ static char 	*do_selectargs(char **ap, bool_t print_menu);
 #endif /* KSH */
 #ifdef KSH
 static int	dbteste_isa(Test_env *te, Test_meta meta);
-static const char *dbteste_getopnd ARGS((Test_env *te, Test_op op,
-					 int do_eval));
-static int	dbteste_eval ARGS((Test_env *te, Test_op op, const char *opnd1,
-				const char *opnd2, int do_eval));
+static const char *dbteste_getopnd(Test_env *te, Test_op op,
+					 int do_eval);
+static int	dbteste_eval(Test_env *te, Test_op op, const char *opnd1,
+				const char *opnd2, int do_eval);
 static void	dbteste_error(Test_env *te, int offset, const char *msg);
 #endif /* KSH */
 

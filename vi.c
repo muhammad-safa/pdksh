@@ -26,7 +26,7 @@ struct edstate {
 };
 
 
-static int	vi_hook	ARGS((int ch));
+static int	vi_hook(int ch);
 static void 	vi_reset(char *buf, size_t len);
 static int	nextstate(int ch);
 static int	vi_insert(int ch);

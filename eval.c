@@ -43,15 +43,15 @@ static	int	varsub(Expand *xp, char *sp, char *word, int *stypep, int *slenp);
 static	int	comsub(Expand *xp, char *cp);
 static	char   *trimsub(char *str, char *pat, int how);
 static	void	glob(char *cp, XPtrV *wp, int markdirs);
-static	void	globit ARGS((XString *xs, char **xpp, char *sp, XPtrV *wp,
-			     int check));
-static char	*maybe_expand_tilde ARGS((char *p, XString *dsp, char **dpp,
-					  int isassign));
+static	void	globit(XString *xs, char **xpp, char *sp, XPtrV *wp,
+			     int check);
+static char	*maybe_expand_tilde(char *p, XString *dsp, char **dpp,
+					  int isassign);
 static	char   *tilde(char *acp);
 static	char   *homedir(char *name);
 #ifdef BRACE_EXPAND
-static void	alt_expand ARGS((XPtrV *wp, char *start, char *exp_start,
-				 char *end, int fdo));
+static void	alt_expand(XPtrV *wp, char *start, char *exp_start,
+				 char *end, int fdo);
 #endif
 
 /* compile and expand word */

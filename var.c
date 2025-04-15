@@ -16,13 +16,13 @@
  */
 static	struct tbl vtemp;
 static	struct table specials;
-static char	*formatstr	ARGS((struct tbl *vp, const char *s));
-static void	export		ARGS((struct tbl *vp, const char *val));
-static int	special		ARGS((const char *name));
-static void	unspecial	ARGS((const char *name));
-static void	getspec		ARGS((struct tbl *vp));
-static void	setspec		ARGS((struct tbl *vp));
-static void	unsetspec	ARGS((struct tbl *vp));
+static char	*formatstr	(struct tbl *vp, const char *s);
+static void	export		(struct tbl *vp, const char *val);
+static int	special		(const char *name);
+static void	unspecial	(const char *name);
+static void	getspec		(struct tbl *vp);
+static void	setspec		(struct tbl *vp);
+static void	unsetspec	(struct tbl *vp);
 static struct tbl *arraysearch (struct tbl *, int);
 
 /*

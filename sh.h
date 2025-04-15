@@ -28,10 +28,6 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 size_t strlcpy(char *dst, const char *src, size_t siz);
 #endif
 
-#ifdef HAVE_MEMORY_H
-# include <memory.h>
-#endif
-
 #include <stdarg.h>
 #define SH_VA_START(va, argn) va_start(va, argn)
 
@@ -83,10 +79,6 @@ extern int errno;
 #endif /* SA_INTERRUPT */
 
 typedef	RETSIGTYPE (*handler_t)(int);	/* signal handler */
-
-#ifdef USE_FAKE_SIGACT
-# include "sigact.h"			/* use sjg's fake sigaction() */
-#endif
 
 #include <paths.h>
 #ifdef _PATH_DEFPATH

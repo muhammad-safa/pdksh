@@ -24,10 +24,15 @@
 
 #include <sys/stat.h>
 #include <sys/times.h>
+#include <sys/wait.h>
 
 #include "sh.h"
-#include "ksh_wait.h"
 #include "tty.h"
+
+#ifndef WIFCORED
+# define WIFCORED(s)    ((s) & 0x80)
+#endif
+#define WSTATUS(s)  (s)
 
 /* Start of system configuration stuff */
 
@@ -96,7 +101,7 @@ typedef struct proc	Proc;
 struct proc {
 	Proc	*next;		/* next process in pipeline (if any) */
 	int	state;
-	WAIT_T	status;		/* wait status */
+	int 	status;		/* wait status */
 	pid_t	pid;		/* process id */
 	char	command[48];	/* process command string */
 };
@@ -1204,7 +1209,7 @@ j_waitj(j, flags, where)
 	j->flags &= ~(JF_WAITING|JF_W_ASYNCNOTIFY);
 
 	if (j->flags & JF_FG) {
-		WAIT_T	status;
+		int	status;
 
 		j->flags &= ~JF_FG;
 #ifdef TTY_PGRP
@@ -1309,7 +1314,7 @@ j_sigchld(sig)
 	Job		*j;
 	Proc		UNINITIALIZED(*p);
 	int		pid;
-	WAIT_T		status;
+	int		status;
 	struct tms	t0, t1;
 
 #ifdef JOB_SIGS
@@ -1328,7 +1333,7 @@ j_sigchld(sig)
 	times(&t0);
 	do {
 #ifdef JOB_SIGS
-		pid = ksh_waitpid(-1, &status, (WNOHANG|WUNTRACED));
+		pid = waitpid(-1, &status, (WNOHANG|WUNTRACED));
 #else /* JOB_SIGS */
 		pid = wait(&status);
 #endif /* JOB_SIGS */
@@ -1505,7 +1510,7 @@ j_print(j, how, shf)
 {
 	Proc	*p;
 	int	state;
-	WAIT_T	status;
+	int	status;
 	int	coredumped;
 	char	jobchar = ' ';
 	char	buf[64];

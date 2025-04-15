@@ -79,8 +79,7 @@ else
 fi
 
 AC_CHECK_HEADERS sys/wait.h
-AC_CHECK_HEADERS sys/time.h sys/resource.h termios.h termio.h ulimit.h
-AC_CHECK_HEADERS limits.h
+AC_CHECK_HEADERS termios.h termio.h
 
 AC_CHECK_FIELD stat st_rdev sys/types.h sys/stat.h unistd.h
 
@@ -89,10 +88,7 @@ AC_CHECK_NORETURN && AC_DEFINE 'HAVE_GCC_FUNC_ATTR' '1'
 
 AC_CHECK_FUNCS 'mmap(0, 0, 0, 0, 0, 0)' sys/mman.h
 AC_CHECK_FUNCS tcsetpgrp 
-AC_CHECK_FUNCS getcwd
 AC_CHECK_FUNCS nice
-AC_CHECK_FUNCS ulimit
-AC_CHECK_FUNCS waitpid
 AC_CHECK_FUNCS wait3
 AC_CHECK_FUNCS flock
 AC_CHECK_FUNCS strlcpy

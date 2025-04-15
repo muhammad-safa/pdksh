@@ -1261,37 +1261,11 @@ reset_nonblock(fd)
 # define MAXPATHLEN PATH
 #endif /* MAXPATHLEN */
 
-#ifdef HPUX_GETWD_BUG
-# include "ksh_dir.h"
-
-/*
- * Work around bug in hpux 10.x C library - getwd/getcwd dump core
- * if current directory is not readable.  Done in macro 'cause code
- * is needed in GETWD and GETCWD cases.
- */
-# define HPUX_GETWD_BUG_CODE \
-	{ \
-	    DIR *d = ksh_opendir("."); \
-	    if (!d) \
-		return (char *) 0; \
-	    closedir(d); \
-	}
-#else /* HPUX_GETWD_BUG */
-# define HPUX_GETWD_BUG_CODE
-#endif /* HPUX_GETWD_BUG */
-
 /* Like getcwd(), except bsize is ignored if buf is 0 (MAXPATHLEN is used) */
-char *
-ksh_get_wd(buf, bsize)
-	char *buf;
-	int bsize;
+char *ksh_get_wd(char *buf, int bsize)
 {
-#ifdef HAVE_GETCWD
 	char *b;
 	char *ret;
-
-	/* Before memory allocated */
-	HPUX_GETWD_BUG_CODE
 
 	/* Assume getcwd() available */
 	if (!buf) {
@@ -1310,37 +1284,4 @@ ksh_get_wd(buf, bsize)
 	}
 
 	return ret;
-#else /* HAVE_GETCWD */
-	extern char *getwd(char *);
-	char *b;
-	int len;
-
-	/* Before memory allocated */
-	HPUX_GETWD_BUG_CODE
-
-	if (buf && bsize > MAXPATHLEN)
-		b = buf;
-	else
-		b = alloc(MAXPATHLEN + 1, ATEMP);
-	if (!getwd(b)) {
-		errno = EACCES;
-		if (b != buf)
-			afree(b, ATEMP);
-		return (char *) 0;
-	}
-	len = strlen(b) + 1;
-	if (!buf)
-		b = aresize(b, len, ATEMP);
-	else if (buf != b) {
-		if (len > bsize) {
-			errno = ERANGE;
-			return (char *) 0;
-		}
-		memcpy(buf, b, len);
-		afree(b, ATEMP);
-		b = buf;
-	}
-
-	return b;
-#endif /* HAVE_GETCWD */
 }

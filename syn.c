@@ -34,10 +34,10 @@ static int	assign_command(char *s);
 static int	inalias(struct source *s);
 #ifdef KSH
 static int	dbtestp_isa(Test_env *te, Test_meta meta);
-static const char *dbtestp_getopnd ARGS((Test_env *te, Test_op op,
-					int do_eval));
-static int	dbtestp_eval ARGS((Test_env *te, Test_op op, const char *opnd1,
-				const char *opnd2, int do_eval));
+static const char *dbtestp_getopnd(Test_env *te, Test_op op,
+					int do_eval);
+static int	dbtestp_eval(Test_env *te, Test_op op, const char *opnd1,
+				const char *opnd2, int do_eval);
 static void	dbtestp_error(Test_env *te, int offset, const char *msg);
 #endif /* KSH */
 
