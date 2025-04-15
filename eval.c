@@ -2,9 +2,10 @@
  * Expansion - quoting, separation, substitution, globbing
  */
 
-#include "sh.h"
+#include <dirent.h>
 #include <pwd.h>
-#include "ksh_dir.h"
+
+#include "sh.h"
 #include "ksh_stat.h"
 
 /*
@@ -1091,7 +1092,7 @@ globit(xs, xpp, sp, wp, check)
 		/* xp = *xpp;	   copy_non_glob() may have re-alloc'd xs */
 		*xp = '\0';
 		prefix_len = Xlength(*xs, xp);
-		dirp = ksh_opendir(prefix_len ? Xstring(*xs, xp) : ".");
+		dirp = opendir(prefix_len ? Xstring(*xs, xp) : ".");
 		if (dirp == NULL)
 			goto Nodir;
 		while ((d = readdir(dirp)) != NULL) {
@@ -1103,7 +1104,7 @@ globit(xs, xpp, sp, wp, check)
 			    || !gmatch(name, sp, TRUE))
 				continue;
 
-			len = NLENGTH(d) + 1;
+			len = strlen(d->d_name) + 1;
 			XcheckN(*xs, xp, len);
 			memcpy(xp, name, len);
 			*xpp = xp + len - 1;

@@ -117,29 +117,6 @@ fi
 
 test -d /dev/fd/0 && AC_DEFINE 'HAVE_DEV_FD' '1'
 
-# opendir;  need to see if it will open a non-directory
-
-if AC_CHECK_HEADERS dirent.h && AC_CHECK_FUNCS opendir; then
-    LOGN "can opendir() open a non-directory "
-    cat > ngc$$.c << EOF
-#include <sys/types.h>
-#include <dirent.h>
-int
-main()
-{
-    DIR *foo = opendir("ngc$$");
-    return foo ? 0 : 1;
-}
-EOF
-    if $AC_CC -o ngc$$ ngc$$.c && ./ngc$$; then
-	AC_DEFINE 'OPENDIR_DOES_NONDIR' '1'
-	LOG "(yes)"
-    else
-	LOG "(no)"
-    fi
-    rm -f ngc$$ ngc$$.c
-fi
-
 LOGN "checking process group type "
 if AC_QUIET AC_CHECK_FUNCS 'setpgrp\(0,0\)' unistd.h; then
     # bsd or posix; getpgrp() will tell the difference

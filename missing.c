@@ -6,26 +6,6 @@
 #include "ksh_stat.h"
 #include "ksh_dir.h"
 
-#ifdef OPENDIR_DOES_NONDIR
-/* Prevent opendir() from attempting to open non-directories.  Such
- * behavior can cause problems if it attempts to open special devices...
- */
-DIR *
-ksh_opendir(d)
-	const char *d;
-{
-	struct stat statb;
-
-	if (stat(d, &statb) != 0)
-		return (DIR *) 0;
-	if (!S_ISDIR(statb.st_mode)) {
-		errno = ENOTDIR;
-		return (DIR *) 0;
-	}
-	return opendir(d);
-}
-#endif /* OPENDIR_DOES_NONDIR */
-
 /* XXX tnn note: The below copyright applies to strlcpy and strlcat */
 /* taken from libnbcompat */
 
