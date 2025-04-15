@@ -258,35 +258,15 @@ test_eval(te, op, opnd1, opnd2, do_eval)
 	  case TO_FILID: /* -d */
 		return test_stat(opnd1, &b1) == 0 && S_ISDIR(b1.st_mode);
 	  case TO_FILCDEV: /* -c */
-#ifdef S_ISCHR
 		return test_stat(opnd1, &b1) == 0 && S_ISCHR(b1.st_mode);
-#else
-		return 0;
-#endif
 	  case TO_FILBDEV: /* -b */
-#ifdef S_ISBLK
 		return test_stat(opnd1, &b1) == 0 && S_ISBLK(b1.st_mode);
-#else
-		return 0;
-#endif
 	  case TO_FILFIFO: /* -p */
-#ifdef S_ISFIFO
 		return test_stat(opnd1, &b1) == 0 && S_ISFIFO(b1.st_mode);
-#else
-		return 0;
-#endif
 	  case TO_FILSYM: /* -h -L */
-#ifdef S_ISLNK
 		return lstat(opnd1, &b1) == 0 && S_ISLNK(b1.st_mode);
-#else
-		return 0;
-#endif
 	  case TO_FILSOCK: /* -S */
-#ifdef S_ISSOCK
 		return test_stat(opnd1, &b1) == 0 && S_ISSOCK(b1.st_mode);
-#else
-		return 0;
-#endif
 	  case TO_FILCDF:/* -H HP context dependent files (directories) */
 #ifdef S_ISCDF
 	  {
@@ -309,19 +289,11 @@ test_eval(te, op, opnd1, opnd2, do_eval)
 		return 0;
 #endif
 	  case TO_FILSETU: /* -u */
-#ifdef S_ISUID
 		return test_stat(opnd1, &b1) == 0
 			&& (b1.st_mode & S_ISUID) == S_ISUID;
-#else
-		return 0;
-#endif
 	  case TO_FILSETG: /* -g */
-#ifdef S_ISGID
 		return test_stat(opnd1, &b1) == 0
 			&& (b1.st_mode & S_ISGID) == S_ISGID;
-#else
-		return 0;
-#endif
 	  case TO_FILSTCK: /* -k */
 		return test_stat(opnd1, &b1) == 0
 			&& (b1.st_mode & S_ISVTX) == S_ISVTX;

@@ -1122,7 +1122,7 @@ set_prompt(to, s)
 			ps1 = shf_sclose(shf);
 			saved_atemp = ATEMP;
 			newenv(E_ERRH);
-			if (ksh_sigsetjmp(e->jbuf, 0)) {
+			if (sigsetjmp(e->jbuf, 0)) {
 				prompt = safe_prompt;
 				/* Don't print an error - assume it has already
 				 * been printed.  Reason is we may have forked

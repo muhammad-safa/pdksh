@@ -104,11 +104,9 @@ c_cd(wp)
 	cdpath = str_val(global("CDPATH"));
 	do {
 		cdnode = make_path(current_wd, dir, &cdpath, &xs, &phys_path);
-#ifdef S_ISLNK
 		if (physical)
 			rval = chdir(try = Xstring(xs, xp) + phys_path);
 		else
-#endif /* S_ISLNK */
 		{
 			simplify_path(Xstring(xs, xp));
 			rval = chdir(try = Xstring(xs, xp));
@@ -136,9 +134,7 @@ c_cd(wp)
 	if (!ISABSPATH(Xstring(xs, xp))) {
 		pwd = (char *) 0;
 	} else
-#ifdef S_ISLNK
 	if (!physical || !(pwd = get_phys_path(Xstring(xs, xp))))
-#endif /* S_ISLNK */
 		pwd = Xstring(xs, xp);
 
 	/* Set PWD */
@@ -188,12 +184,8 @@ c_pwd(wp)
 		bi_errorf("too many arguments");
 		return 1;
 	}
-#ifdef S_ISLNK
 	p = current_wd[0] ? (physical ? get_phys_path(current_wd) : current_wd)
 			  : (char *) 0;
-#else /* S_ISLNK */
-	p = current_wd[0] ? current_wd : (char *) 0;
-#endif /* S_ISLNK */
 	if (p && eaccess(p, R_OK) < 0)
 		p = (char *) 0;
 	if (!p) {

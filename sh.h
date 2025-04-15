@@ -54,18 +54,6 @@ extern int errno;
 # define R_OK 4
 #endif /* !F_OK */
 
-#ifndef SEEK_SET
-# ifdef L_SET
-#  define SEEK_SET L_SET
-#  define SEEK_CUR L_INCR
-#  define SEEK_END L_XTND
-# else /* L_SET */
-#  define SEEK_SET 0
-#  define SEEK_CUR 1
-#  define SEEK_END 2
-# endif /* L_SET */
-#endif /* !SEEK_SET */
-
 #include <limits.h>
 
 #include <signal.h>
@@ -130,21 +118,6 @@ typedef	RETSIGTYPE (*handler_t)(int);	/* signal handler */
 
 /* this is a hang-over from older versions of the os2 port */
 #define ksh_dupbase(fd, base) fcntl(fd, F_DUPFD, base)
-
-#ifdef HAVE_SIGSETJMP
-# define ksh_sigsetjmp(env,sm)	sigsetjmp((env), (sm))
-# define ksh_siglongjmp(env,v)	siglongjmp((env), (v))
-# define ksh_jmp_buf		sigjmp_buf
-#else /* HAVE_SIGSETJMP */
-# ifdef HAVE__SETJMP
-#  define ksh_sigsetjmp(env,sm)	_setjmp(env)
-#  define ksh_siglongjmp(env,v)	_longjmp((env), (v))
-# else /* HAVE__SETJMP */
-#  define ksh_sigsetjmp(env,sm)	setjmp(env)
-#  define ksh_siglongjmp(env,v)	longjmp((env), (v))
-# endif /* HAVE__SETJMP */
-# define ksh_jmp_buf		jmp_buf
-#endif /* HAVE_SIGSETJMP */
 
 /* Find a integer type that is at least 32 bits (or die) - SIZEOF_* defined
  * by autoconf (assumes an 8 bit byte, but I'm not concerned).
@@ -293,7 +266,7 @@ EXTERN	struct env {
 	struct	block *loc;		/* local variables and functions */
 	short  *savefd;			/* original redirected fd's */
 	struct	env *oenv;		/* link to previous enviroment */
-	ksh_jmp_buf jbuf;		/* long jump back to env creator */
+	jmp_buf jbuf;		/* long jump back to env creator */
 	struct temp *temps;		/* temp files */
 } *e;
 

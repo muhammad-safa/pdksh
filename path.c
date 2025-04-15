@@ -44,9 +44,7 @@
  * 
  */
 
-#ifdef S_ISLNK
 static char	*do_phys_path(XString *xsp, char *xp, const char *path);
-#endif /* S_ISLNK */
 
 /*
  *	Makes a filename into result using the following algorithm.
@@ -243,10 +241,7 @@ set_current_wd(path)
 		afree(p, ATEMP);
 }
 
-#ifdef S_ISLNK
-char *
-get_phys_path(path)
-	const char *path;
+char *get_phys_path(const char *path)
 {
 	XString xs;
 	char *xp;
@@ -265,11 +260,7 @@ get_phys_path(path)
 	return Xclose(xs, xp);
 }
 
-static char *
-do_phys_path(xsp, xp, path)
-	XString *xsp;
-	char *xp;
-	const char *path;
+static char *do_phys_path(XString *xsp, char *xp, const char *path)
 {
 	const char *p, *q;
 	int len, llen;
@@ -318,7 +309,6 @@ do_phys_path(xsp, xp, path)
 	}
 	return xp;
 }
-#endif /* S_ISLNK */
 
 #ifdef	TEST
 

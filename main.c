@@ -418,7 +418,7 @@ include(name, argc, argv, intr_ok)
 	}
 	sold = source;
 	newenv(E_INCL);
-	i = ksh_sigsetjmp(e->jbuf, 0);
+	i = sigsetjmp(e->jbuf, 0);
 	if (i) {
 		source = sold;
 		if (s) /* Do this before quitenv(), which frees the memory */
@@ -495,7 +495,7 @@ shell(s, toplevel)
 	newenv(E_PARSE);
 	if (interactive)
 		really_exit = 0;
-	i = ksh_sigsetjmp(e->jbuf, 0);
+	i = sigsetjmp(e->jbuf, 0);
 	if (i) {
 		s->start = s->str = null;
 		switch (i) {
@@ -607,7 +607,7 @@ unwind(i)
 		  case E_INCL:
 		  case E_LOOP:
 		  case E_ERRH:
-			ksh_siglongjmp(e->jbuf, i);
+			siglongjmp(e->jbuf, i);
 			/*NOTREACHED*/
 
 		  case E_NONE:

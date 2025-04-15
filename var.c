@@ -55,8 +55,7 @@ newblock()
 /*
  * pop a block handling special variables
  */
-void
-popblock()
+void popblock()
 {
 	struct block *l = e->loc;
 	struct tbl *vp, **vpp = l->vars.tbls, *vq;
@@ -76,8 +75,7 @@ popblock()
 }
 
 /* called by main() to initialize variable data structures */
-void
-initvar()
+void initvar()
 {
 	static const struct {
 		const char *name;
@@ -156,9 +154,7 @@ array_index_calc(n, arrayp, valp)
 /*
  * Search for variable, if not found create globally.
  */
-struct tbl *
-global(n)
-	const char *n;
+struct tbl *global(const char *n)
 {
 	struct block *l = e->loc;
 	struct tbl *vp;

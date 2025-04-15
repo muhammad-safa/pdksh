@@ -208,7 +208,7 @@ execute(t, flags)
 		 */
 		sigprocmask(SIG_BLOCK, &sm_sigchld, &omask);
 		e->type = E_ERRH;
-		i = ksh_sigsetjmp(e->jbuf, 0);
+		i = sigsetjmp(e->jbuf, 0);
 		if (i) {
 			sigprocmask(SIG_SETMASK, &omask, (sigset_t *) 0);
 			quitenv();
@@ -310,7 +310,7 @@ execute(t, flags)
 			: e->loc->argv + 1;
 		e->type = E_LOOP;
 		while (1) {
-			i = ksh_sigsetjmp(e->jbuf, 0);
+			i = sigsetjmp(e->jbuf, 0);
 			if (!i)
 				break;
 			if ((e->flags&EF_BRKCONT_PASS)
@@ -352,7 +352,7 @@ execute(t, flags)
 	  case TUNTIL:
 		e->type = E_LOOP;
 		while (1) {
-			i = ksh_sigsetjmp(e->jbuf, 0);
+			i = sigsetjmp(e->jbuf, 0);
 			if (!i)
 				break;
 			if ((e->flags&EF_BRKCONT_PASS)
@@ -659,7 +659,7 @@ comexec(t, tp, ap, flags)
 		tp->flag |= FINUSE;
 
 		e->type = E_FUNC;
-		i = ksh_sigsetjmp(e->jbuf, 0);
+		i = sigsetjmp(e->jbuf, 0);
 		if (i == 0) {
 			/* seems odd to pass XERROK here, but at&t ksh does */
 			exstat = execute(tp->val.t, flags & XERROK);
@@ -1317,7 +1317,7 @@ herein(content, sub)
 
 	osource = source;
 	newenv(E_ERRH);
-	i = ksh_sigsetjmp(e->jbuf, 0);
+	i = sigsetjmp(e->jbuf, 0);
 	if (i) {
 		source = osource;
 		quitenv();

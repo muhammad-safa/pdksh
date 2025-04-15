@@ -801,13 +801,14 @@ static char *clocktos(clock_t t)
 	static char temp[22]; /* enough for 64 bit clock_t */
 	int i;
 	char *cp = temp + sizeof(temp);
+    long clk_tck = sysconf(_SC_CLK_TCK);
 
 	/* note: posix says must use max precision, ie, if clk_tck is
 	 * 1000, must print 3 places after decimal (if non-zero, else 1).
 	 */
-	if (CLK_TCK != 100)	/* convert to 1/100'ths */
-	    t = (t < 1000000000/CLK_TCK) ?
-		    (t * 100) / CLK_TCK : (t / CLK_TCK) * 100;
+	if (clk_tck != 100)	/* convert to 1/100'ths */
+	    t = (t < 1000000000/clk_tck) ?
+		    (t * 100) / clk_tck : (t / clk_tck) * 100;
 
 	*--cp = '\0';
 	for (i = -2; i <= 0 || t > 0; i++) {

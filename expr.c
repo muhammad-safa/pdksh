@@ -176,7 +176,7 @@ v_evaluate(vp, expr, error_ok)
 	curstate.evaling = (struct tbl *) 0;
 
 	newenv(E_ERRH);
-	i = ksh_sigsetjmp(e->jbuf, 0);
+	i = sigsetjmp(e->jbuf, 0);
 	if (i) {
 		/* Clear EXPRINEVAL in of any variables we were playing with */
 		if (curstate.evaling)

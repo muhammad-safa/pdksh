@@ -100,19 +100,8 @@ AC_CHECK_FUNCS ulimit
 AC_CHECK_FUNCS waitpid
 AC_CHECK_FUNCS wait3
 AC_CHECK_FUNCS flock
-AC_CHECK_FUNCS lstat
-AC_CHECK_FUNCS times
 AC_CHECK_FUNCS strlcpy
 AC_CHECK_FUNCS strlcat
-
-if AC_CHECK_DEF CLK_TCK limits.h time.h; then
-    : yay
-elif [ "$OS_LINUX" ]; then
-    # maybe uses sysconf?
-    if AC_CHECK_FUNCS 'sysconf(_SC_CLK_TCK)' unistd.h; then
-	AC_DEFINE 'CLK_TCK' 'sysconf(_SC_CLK_TCK)'
-    fi
-fi
 
 test -d /dev/fd/0 && AC_DEFINE 'HAVE_DEV_FD' '1'
 
