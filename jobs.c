@@ -24,26 +24,6 @@
 #endif
 #define WSTATUS(s)  (s)
 
-/* Start of system configuration stuff */
-
-/* We keep CHILD_MAX zombie processes around (exact value isn't critical) */
-#ifndef CHILD_MAX
-# if defined(HAVE_SYSCONF) && defined(_SC_CHILD_MAX)
-#  define CHILD_MAX sysconf(_SC_CHILD_MAX)
-# else /* _SC_CHILD_MAX */
-#  ifdef _POSIX_CHILD_MAX
-#   define CHILD_MAX	((_POSIX_CHILD_MAX) * 2)
-#  else /* _POSIX_CHILD_MAX */
-#   define CHILD_MAX	20
-#  endif /* _POSIX_CHILD_MAX */
-# endif /* _SC_CHILD_MAX */
-#endif /* !CHILD_MAX */
-
-#define TTY_PGRP
-
-/* End of system configuration stuff */
-
-
 /* Order important! */
 #define PRUNNING	0
 #define PEXITED		1
@@ -160,11 +140,9 @@ static void		remove_job(Job *j, const char *where);
 static int		kill_job(Job *j, int sig);
 
 /* initialize job control */
-void
-j_init(mflagset)
-	int mflagset;
+void j_init(int mflagset)
 {
-	child_max = CHILD_MAX; /* so syscon() isn't always being called */
+	child_max = sysconf(_SC_CHILD_MAX);
 
 	sigemptyset(&sm_default);
 	sigprocmask(SIG_SETMASK, &sm_default, (sigset_t *) 0);
