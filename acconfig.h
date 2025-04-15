@@ -12,9 +12,6 @@
 /* Define if your kernal doesn't handle scripts starting with #! */
 #undef SHARPBANG
 
-/* Define if dup2() preserves the close-on-exec flag (ultrix does this) */
-#undef DUP2_BROKEN
-
 /* Define as the return value of signal handlers (0 or ).  */
 #undef RETSIGVAL
 
@@ -92,12 +89,6 @@
 
 /* Define if you have a sane <termio.h> header file */
 #undef HAVE_TERMIO_H
-
-/* Define if you don't have times() or if it always returns 0 */
-#undef TIMES_BROKEN
-
-/* Define if opendir() will open non-directory files */
-#undef OPENDIR_DOES_NONDIR
 
 /* Define if the pgrp of setpgrp() can't be the pid of a zombie process */
 #undef NEED_PGRP_SYNC

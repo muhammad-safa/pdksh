@@ -121,7 +121,7 @@ int	ksh_dup2(int ofd, int nfd, int errok);
 int 	savefd	(int fd, int noclose);
 void 	restfd	(int fd, int ofd);
 void 	openpipe(int *pv);
-void 	closepipe(int *pv);
+void 	closepipe(const int *pv);
 int	check_fd(char *name, int mode, const char **emsgp);
 #ifdef KSH
 void	coproc_init(void);

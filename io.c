@@ -214,22 +214,12 @@ initio()
 }
 
 /* A dup2() with error checking */
-int
-ksh_dup2(ofd, nfd, errok)
-	int ofd;
-	int nfd;
-	int errok;
+int ksh_dup2(int ofd, int nfd, int errok)
 {
 	int ret = dup2(ofd, nfd);
 
 	if (ret < 0 && errno != EBADF && !errok)
 		errorf("too many files open in shell");
-
-#ifdef DUP2_BROKEN
-	/* Ultrix systems like to preserve the close-on-exec flag */
-	if (ret >= 0)
-		(void) fcntl(nfd, F_SETFD, 0);
-#endif /* DUP2_BROKEN */
 
 	return ret;
 }
@@ -238,10 +228,7 @@ ksh_dup2(ofd, nfd, errok)
  * move fd from user space (0<=fd<10) to shell space (fd>=10),
  * set close-on-exec flag.
  */
-int
-savefd(fd, noclose)
-	int fd;
-	int noclose;
+int savefd(int fd, int noclose)
 {
 	int nfd;
 
@@ -260,9 +247,7 @@ savefd(fd, noclose)
 	return nfd;
 }
 
-void
-restfd(fd, ofd)
-	int fd, ofd;
+void restfd(int fd, int ofd)
 {
 	if (fd == 2)
 		shf_flush(&shf_iob[fd]);
@@ -274,9 +259,7 @@ restfd(fd, ofd)
 	}
 }
 
-void
-openpipe(pv)
-	int *pv;
+void openpipe(int *pv)
 {
 	if (pipe(pv) < 0)
 		errorf("can't create pipe - try again");
@@ -284,9 +267,7 @@ openpipe(pv)
 	pv[1] = savefd(pv[1], 0);
 }
 
-void
-closepipe(pv)
-	int *pv;
+void closepipe(const int *pv)
 {
 	close(pv[0]);
 	close(pv[1]);
@@ -295,11 +276,7 @@ closepipe(pv)
 /* Called by iosetup() (deals with 2>&4, etc.), c_read, c_print to turn
  * a string (the X in 2>&X, read -uX, print -uX) into a file descriptor.
  */
-int
-check_fd(name, mode, emsgp)
-	char *name;
-	int mode;
-	const char **emsgp;
+int check_fd(char *name, int mode, const char **emsgp)
 {
 	int fd, fl;
 
