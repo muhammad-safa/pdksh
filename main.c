@@ -4,10 +4,10 @@
 
 #define	EXTERN				/* define EXTERNs in sh.h */
 
-#include "sh.h"
-#include "ksh_stat.h"
-
+#include <sys/stat.h>
 #include <time.h>
+
+#include "sh.h"
 
 extern char **environ;
 
@@ -146,7 +146,6 @@ int main(int argc, char **argv)
 	init_histvec();
 
 	def_path = DEFAULT__PATH;
-#if defined(_CS_PATH)
 	{
 		size_t len = confstr(_CS_PATH, (char *) 0, 0);
 		char *new;
@@ -156,7 +155,6 @@ int main(int argc, char **argv)
 			def_path = new;
 		}
 	}
-#endif /* _CS_PATH */
 
 	/* Set PATH to def_path (will set the path global variable).
 	 * (import of environment below will probably change this setting).

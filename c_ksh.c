@@ -3,7 +3,6 @@
  */
 
 #include "sh.h"
-#include "ksh_stat.h"
 #include <ctype.h>
 
 #ifdef __CYGWIN__

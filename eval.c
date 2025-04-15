@@ -4,9 +4,9 @@
 
 #include <dirent.h>
 #include <pwd.h>
+#include <sys/stat.h>
 
 #include "sh.h"
-#include "ksh_stat.h"
 
 /*
  * string expansion

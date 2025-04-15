@@ -1,5 +1,5 @@
+#include <sys/stat.h>
 #include "sh.h"
-#include "ksh_stat.h"
 
 /*
  *	Contains a routine to search a : separated list of

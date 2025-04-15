@@ -15,8 +15,8 @@
  *		to work on your system
  */
 
+#include <sys/stat.h>
 #include "sh.h"
-#include "ksh_stat.h"
 
 #ifdef HISTORY
 # ifdef EASY_HISTORY

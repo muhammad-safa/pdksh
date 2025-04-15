@@ -2,9 +2,10 @@
  * built-in Bourne commands
  */
 
-#include "sh.h"
-#include "ksh_stat.h" 	/* umask() */
 #include <sys/times.h>
+#include <sys/stat.h>
+
+#include "sh.h"
 
 static	char *clocktos(clock_t t);
 

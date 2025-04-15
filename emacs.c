@@ -9,10 +9,10 @@
 #include "config.h"
 #ifdef EMACS
 
-#include "sh.h"
-#include "ksh_stat.h"
-#include "ksh_dir.h"
 #include <ctype.h>
+#include <sys/stat.h>
+
+#include "sh.h"
 #include "edit.h"
 
 static	Area	aedit;

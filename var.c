@@ -1,8 +1,9 @@
+#include <ctype.h>
+#include <sys/stat.h>
 #include <time.h>
+
 #include "sh.h"
 #include "ksh_limval.h"
-#include "ksh_stat.h"
-#include <ctype.h>
 
 /*
  * Variables

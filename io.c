@@ -3,8 +3,9 @@
  */
 
 #include <ctype.h>
+#include <sys/stat.h>
+
 #include "sh.h"
-#include "ksh_stat.h"
 
 static int initio_done;
 

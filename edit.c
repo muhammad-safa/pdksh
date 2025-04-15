@@ -16,7 +16,7 @@
 # include <sys/ptem.h>		/* needed for struct winsize */
 #endif /* OS_SCO */
 #include <ctype.h>
-#include "ksh_stat.h"
+#include <sys/stat.h>
 
 
 #if defined(TIOCGWINSZ)

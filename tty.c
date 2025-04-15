@@ -1,5 +1,6 @@
+#include <sys/stat.h>
+
 #include "sh.h"
-#include "ksh_stat.h"
 #define EXTERN
 #include "tty.h"
 #undef EXTERN

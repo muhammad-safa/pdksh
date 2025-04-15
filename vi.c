@@ -7,9 +7,10 @@
 #include "config.h"
 #ifdef VI
 
-#include "sh.h"
 #include <ctype.h>
-#include "ksh_stat.h"		/* completion */
+#include <sys/stat.h>
+
+#include "sh.h"
 #include "edit.h"
 
 #define CMDLEN		1024

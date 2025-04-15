@@ -2,8 +2,9 @@
  *  Shell file I/O routines
  */
 
+//#include <sys/stat.h>
+
 #include "sh.h"
-#include "ksh_stat.h"
 #include "ksh_limval.h"
 
 

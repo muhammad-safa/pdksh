@@ -6,10 +6,10 @@
 #include "config.h"
 
 #ifdef KSH
+#include <sys/stat.h>
 #include <time.h>
 
 #include "sh.h"
-#include "ksh_stat.h"
 
 #define MBMESSAGE	"you have mail in $_"
 

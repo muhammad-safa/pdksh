@@ -90,9 +90,6 @@
 /* Define if you can include <sys/ioctl.h> with <termio.h> */
 #undef SYS_IOCTL_WITH_TERMIO
 
-/* Define if you have a lstat() function in your C library */
-#undef HAVE_LSTAT
-
 /* Define if you have a sane <termio.h> header file */
 #undef HAVE_TERMIO_H
 

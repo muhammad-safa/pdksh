@@ -2,9 +2,10 @@
  * Routines which may be missing on some machines
  */
 
+//#include <dirent.h>
+#include <sys/stat.h>
+
 #include "sh.h"
-#include "ksh_stat.h"
-#include "ksh_dir.h"
 
 /* XXX tnn note: The below copyright applies to strlcpy and strlcat */
 /* taken from libnbcompat */

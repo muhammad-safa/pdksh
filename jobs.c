@@ -22,10 +22,10 @@
  *	- NEED_PGRP_SYNC defined iff JOBS is defined - see comment below
  */
 
+#include <sys/stat.h>
 #include <sys/times.h>
 
 #include "sh.h"
-#include "ksh_stat.h"
 #include "ksh_wait.h"
 #include "tty.h"
 

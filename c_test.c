@@ -7,8 +7,9 @@
  * modified by J.T. Conklin to add POSIX compatibility.
  */
 
+#include <sys/stat.h>
+
 #include "sh.h"
-#include "ksh_stat.h"
 #include "c_test.h"
 
 /* test(1) accepts the following grammar:

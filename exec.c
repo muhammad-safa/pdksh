@@ -2,10 +2,11 @@
  * execute command tree
  */
 
+#include <ctype.h>
+#include <sys/stat.h>
+
 #include "sh.h"
 #include "c_test.h"
-#include <ctype.h>
-#include "ksh_stat.h"
 
 /* Does ps4 get parameter substitutions done? */
 #ifdef KSH
