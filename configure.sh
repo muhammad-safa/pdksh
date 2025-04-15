@@ -102,29 +102,6 @@ else
 fi
 rm -f ngc$$ ngc$$.sh ngc$$.c
 
-# define SIZEOF_INT/SIZEOF_LONG
-cat > ngc$$.c << EOF
-#include <stdio.h>
-int
-main()
-{
-    printf("SIZEOF_INT %d\n", sizeof(int));
-    printf("SIZEOF_LONG %d\n", sizeof(long));
-    return 0;
-}
-EOF
-
-if $AC_CC -o ngc$$ ngc$$.c; then
-    ./ngc$$ | while read def value; do
-	LOG "define $def as $value"
-	AC_DEFINE $def $value
-    done
-    rm -f ngc$$ ngc$$.c
-else
-    rm -f ngc$$ ngc$$.c
-    AC_FAIL "cannot define SIZEOF_INT or SIZEOF_LONG"
-fi
-
 # add in the various flags that can be passed on in
 
 AC_DEFINE 'RETSIGTYPE' 'void'
