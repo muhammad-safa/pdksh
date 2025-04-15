@@ -838,7 +838,7 @@ int c_exec(char **wp)
 			 */
 #ifdef KSH
 			if (i > 2 && e->savefd[i])
-				fd_clexec(i);
+				fcntl(i, F_SETFD, 1);
 #endif /* KSH */
 		}
 		e->savefd = NULL; 

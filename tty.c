@@ -157,7 +157,7 @@ tty_init(init_ttystate)
 	if ((tty_fd = ksh_dupbase(tfd, FDBASE)) < 0) {
 		warningf(FALSE, "j_ttyinit: dup of tty fd failed: %s",
 			strerror(errno));
-	} else if (fd_clexec(tty_fd) < 0) {
+	} else if (fcntl(tty_fd, F_SETFD, 1)) {
 		warningf(FALSE, "j_ttyinit: can't set close-on-exec flag: %s",
 			strerror(errno));
 		close(tty_fd);

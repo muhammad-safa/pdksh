@@ -243,7 +243,7 @@ int savefd(int fd, int noclose)
 			close(fd);
 	} else
 		nfd = fd;
-	fd_clexec(nfd);
+	fcntl(nfd, F_SETFD, 1);
 	return nfd;
 }
 

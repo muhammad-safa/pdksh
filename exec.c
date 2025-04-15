@@ -35,36 +35,6 @@ static void	dbteste_error(Test_env *te, int offset, const char *msg);
 
 
 /*
- * handle systems that don't have F_SETFD
- */
-#ifndef F_SETFD
-# ifndef MAXFD
-#   define  MAXFD 64
-# endif
-/* a bit field would be smaller, but this will work */
-static char clexec_tab[MAXFD+1];
-#endif
-
-/*
- * we now use this function always.
- */
-int
-fd_clexec(fd)
-    int fd;
-{
-#ifndef F_SETFD
-	if (fd >= 0 && fd < sizeof(clexec_tab)) {
-		clexec_tab[fd] = 1;
-		return 0;
-	}
-	return -1;
-#else
-	return fcntl(fd, F_SETFD, 1);
-#endif
-}
-
-
-/*
  * execute command tree
  */
 int
@@ -408,13 +378,6 @@ execute(t, flags)
 	  case TEXEC:		/* an eval'd TCOM */
 		s = t->args[0];
 		ap = makenv();
-#ifndef F_SETFD
-		for (i = 0; i < sizeof(clexec_tab); i++)
-			if (clexec_tab[i]) {
-				close(i);
-				clexec_tab[i] = 0;
-			}
-#endif
 		restoresigs();
 		cleanup_proc_env();
 		execve(t->str, t->args, ap);

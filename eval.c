@@ -55,10 +55,7 @@ static void	alt_expand(XPtrV *wp, char *start, char *exp_start,
 #endif
 
 /* compile and expand word */
-char *
-substitute(cp, f)
-	const char *cp;
-	int f;
+char *substitute(const char *cp, int f)
 {
 	struct source *s, *sold;
 
@@ -76,10 +73,7 @@ substitute(cp, f)
 /*
  * expand arg-list
  */
-char **
-eval(ap, f)
-	char **ap;
-	int f;
+char **eval(char **ap, int f)
 {
 	XPtrV w;
 
@@ -103,10 +97,7 @@ eval(ap, f)
 /*
  * expand string
  */
-char *
-evalstr(cp, f)
-	char *cp;
-	int f;
+char *evalstr(char *cp, int f)
 {
 	XPtrV w;
 

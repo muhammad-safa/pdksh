@@ -117,7 +117,7 @@ shf_fdopen(fd, sflags, shf)
 	shf->errno_ = 0;
 	shf->bsize = bsize;
 	if (sflags & SHF_CLEXEC)
-		fd_clexec(fd);
+		fcntl(fd, F_SETFD, 1);
 	return shf;
 }
 
@@ -160,7 +160,7 @@ shf_reopen(fd, sflags, shf)
 	shf->flags = (shf->flags & (SHF_ALLOCS | SHF_ALLOCB)) | sflags;
 	shf->errno_ = 0;
 	if (sflags & SHF_CLEXEC)
-		fd_clexec(fd);
+		fcntl(fd, F_SETFD, 1);
 	return shf;
 }
 
