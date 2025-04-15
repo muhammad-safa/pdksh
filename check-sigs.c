@@ -85,25 +85,13 @@ main(argc, argv)
 
 	if (!wait_forever) {
 		char *blocked = "";
-#ifdef POSIX_SIGNALS
 		sigset_t mask;
 
 		sigprocmask(SIG_BLOCK, (sigset_t *) 0, &mask);
-#endif /* POSIX_SIGNALS */
-#ifdef BSD42_SIGNALS
-		int mask;
-
-		mask = sigblock(0);
-#endif /* BSD42_SIGNALS */
 		for (i = 1; i < NSIG; i++) {
 			f = signal(i, SIG_DFL);
 			eno = errno;
-#ifdef BSD42_SIGNALS
-			blocked = (mask & sigmask(i)) ? "blocked" : "";
-#endif /* BSD42_SIGNALS */
-#ifdef POSIX_SIGNALS
 			blocked = sigismember(&mask, i) ? "blocked" : "";
-#endif /* POSIX_SIGNALS */
 			if (f == SIG_DFL && !report_all && !*blocked)
 				continue;
 			printf("%3d: %7s %30s: ",

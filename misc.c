@@ -1131,10 +1131,7 @@ print_columns(shf, n, func, arg, max_width)
 }
 
 /* Strip any nul bytes from buf - returns new length (nbytes - # of nuls) */
-int
-strip_nuls(buf, nbytes)
-	char *buf;
-	int nbytes;
+int strip_nuls(char *buf, int nbytes)
 {
 	char *dst;
 
@@ -1227,16 +1224,7 @@ reset_nonblock(fd)
 		return -1;
 	/* With luck, the C compiler will reduce this to a constant */
 	blocking_flags = 0;
-#ifdef O_NONBLOCK
 	blocking_flags |= O_NONBLOCK;
-#endif /* O_NONBLOCK */
-#ifdef O_NDELAY
-	blocking_flags |= O_NDELAY;
-#else /* O_NDELAY */
-# ifndef O_NONBLOCK
-	blocking_flags |= FNDELAY; /* hope this exists... */
-# endif /* O_NONBLOCK */
-#endif /* O_NDELAY */
 	if (!(flags & blocking_flags))
 		return 0;
 	flags &= ~blocking_flags;
@@ -1246,12 +1234,7 @@ reset_nonblock(fd)
 }
 
 
-#ifdef HAVE_SYS_PARAM_H
-# include <sys/param.h>
-#endif /* HAVE_SYS_PARAM_H */
-#ifndef MAXPATHLEN
-# define MAXPATHLEN PATH
-#endif /* MAXPATHLEN */
+#include <sys/param.h>
 
 /* Like getcwd(), except bsize is ignored if buf is 0 (MAXPATHLEN is used) */
 char *ksh_get_wd(char *buf, int bsize)

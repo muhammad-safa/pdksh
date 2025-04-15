@@ -7,6 +7,7 @@
  * modified by J.T. Conklin to add POSIX compatibility.
  */
 
+#include <fcntl.h>
 #include <sys/stat.h>
 
 #include "sh.h"

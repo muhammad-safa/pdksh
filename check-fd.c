@@ -7,11 +7,7 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <unistd.h>
-#ifdef HAVE_FCNTL_H
 # include <fcntl.h>
-#else /* HAVE_FCNTL_H */
-# include <sys/file.h>
-#endif /* HAVE_FCNTL_H */
 #include "ksh_stat.h"
 
 int	usage();

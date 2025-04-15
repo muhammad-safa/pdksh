@@ -5,28 +5,7 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <unistd.h>
-#ifdef HAVE_FCNTL_H
-# include <fcntl.h>
-#else /* HAVE_FCNTL_H */
-# include <sys/file.h>
-#endif /* HAVE_FCNTL_H */
-
-#ifdef BSD_PGRP
-# include <sys/ioctl.h>
-int
-tcgetpgrp(fd)
-	int fd;
-{
-	int r, grp;
-
-	if ((r = ioctl(fd, TIOCGPGRP, &grp)) < 0)
-		return r;
-	return grp;
-}
-# define getPGRP()	getpgrp(0)
-#else /* BSD_PGRP */
-# define getPGRP()	getpgrp()
-#endif /* BSD_PGRP */
+#include <fcntl.h>
 
 int	usage();
 
@@ -64,7 +43,7 @@ int main(int argc, char **argv)
 
     my_pid = getpid();
     my_ppid = getppid();
-    my_pgrp = getPGRP();
+    my_pgrp = getpgrp();
     tty_pgrp = tcgetpgrp(ttyfd);
     tty_name = ttyname(ttyfd);
 

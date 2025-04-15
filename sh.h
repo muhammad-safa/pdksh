@@ -11,14 +11,14 @@
 
 /* Start of common headers */
 
+#include <fcntl.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <setjmp.h>
 #include <stddef.h>
-
 #include <stdlib.h>
 #include <unistd.h>
-
 #include <string.h>
 
 #ifndef HAVE_STRLCAT_H
@@ -29,16 +29,10 @@ size_t strlcpy(char *dst, const char *src, size_t siz);
 #endif
 
 #include <stdarg.h>
-#define SH_VA_START(va, argn) va_start(va, argn)
 
 #include <errno.h>
 extern int errno;
 
-#ifdef HAVE_FCNTL_H
-# include <fcntl.h>
-#else
-# include <sys/file.h>
-#endif /* HAVE_FCNTL_H */
 #ifndef O_ACCMODE
 # define O_ACCMODE	(O_RDONLY|O_WRONLY|O_RDWR)
 #endif /* !O_ACCMODE */
@@ -97,20 +91,6 @@ typedef	RETSIGTYPE (*handler_t)(int);	/* signal handler */
 
 /* this is a hang-over from older versions of the os2 port */
 #define ksh_dupbase(fd, base) fcntl(fd, F_DUPFD, base)
-
-/* Find a integer type that is at least 32 bits (or die) - SIZEOF_* defined
- * by autoconf (assumes an 8 bit byte, but I'm not concerned).
- * NOTE: INT32 may end up being more than 32 bits.
- */
-#if SIZEOF_INT >= 4
-# define INT32	int
-#else /* SIZEOF_INT */
-# if SIZEOF_LONG >= 4
-#  define INT32	long
-# else /* SIZEOF_LONG */
-   #error cannot find 32 bit type...
-# endif /* SIZEOF_LONG */
-#endif /* SIZEOF_INT */
 
 /* end of common headers */
 
@@ -179,7 +159,7 @@ typedef int bool_t;
 #define	BIT(i)	(1<<(i))	/* define bit in flag */
 
 /* Table flag type - needs > 16 and < 32 bits */
-typedef INT32 Tflag;
+typedef int32_t Tflag;
 
 #define	NUFILE	10		/* Number of user-accessible files */
 #define	FDBASE	10		/* First file usable by Shell */
@@ -496,7 +476,7 @@ EXTERN Getopt user_opt;		/* parsing state for getopts builtin command */
 #ifdef KSH
 /* This for co-processes */
 
-typedef INT32 Coproc_id; /* something that won't (realisticly) wrap */
+typedef int32_t Coproc_id; /* something that won't (realisticly) wrap */
 struct coproc {
 	int	read;		/* pipe from co-process's stdout */
 	int	readw;		/* other side of read (saved temporarily) */

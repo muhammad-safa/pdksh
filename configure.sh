@@ -67,17 +67,6 @@ AC_C_CONST
 AC_C_VOLATILE
 UNDEFINED=1 AC_CHECK_TYPE void\* || AC_DEFINE 'void' 'int'
 
-if AC_CHECK_FUNCS sigaction; then
-    AC_DEFINE 'POSIX_SIGNALS' '1'
-elif AC_CHECK_FUNCS sigset; then
-    AC_DEFINE 'BSD41_SIGNALS' '1'
-elif AC_CHECK_FUNCS signal; then
-    # also need to check for reset-upon-receipt behavior
-    AC_DEFINE 'V7_SIGNALS' '1'
-else
-    AC_DEFINE 'USA_FAKE_SIGACT' '1'
-fi
-
 AC_CHECK_HEADERS sys/wait.h
 AC_CHECK_HEADERS termios.h termio.h
 

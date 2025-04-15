@@ -840,7 +840,7 @@ void yyerror(const char *fmt, ...)
 	source->str = null;	/* zap pending input */
 
 	error_prefix(TRUE);
-	SH_VA_START(va, fmt);
+	va_start(va, fmt);
 	shf_vfprintf(shl_out, fmt, va);
 	va_end(va);
 	errorf(null);

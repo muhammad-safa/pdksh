@@ -73,7 +73,7 @@ struct job {
 	int	status;		/* exit status of last process */
 	pid_t	pgrp;		/* process group of job */
 	pid_t	ppid;		/* pid of process that forked job */
-	INT32	age;		/* number of jobs started */
+	int32_t	age;		/* number of jobs started */
 	clock_t	systime;	/* system time used by job */
 	clock_t	usrtime;	/* user time used by job */
 	Proc	*proc_list;	/* process list */
@@ -112,7 +112,7 @@ static Job		*async_job;
 static pid_t		async_pid;
 
 static int		nzombie;	/* # of zombies owned by this process */
-static INT32		njobs;		/* # of jobs started */
+static int32_t	njobs;		/* # of jobs started */
 static int		child_max;	/* CHILD_MAX */
 
 

@@ -3,6 +3,7 @@
  */
 
 #include <ctype.h>
+#include <fcntl.h>
 #include <sys/stat.h>
 
 #include "sh.h"

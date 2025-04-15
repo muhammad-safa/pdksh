@@ -755,7 +755,7 @@ int shf_fprintf(struct shf *shf, const char *fmt, ...)
 	va_list args;
 	int n;
 
-	SH_VA_START(args, fmt);
+	va_start(args, fmt);
 	n = shf_vfprintf(shf, fmt, args);
 	va_end(args);
 
@@ -773,7 +773,7 @@ int shf_snprintf(char *buf, int bsize, const char *fmt, ...)
 			(long) buf, bsize);
 
 	shf_sopen(buf, bsize, SHF_WR, &shf);
-	SH_VA_START(args, fmt);
+	va_start(args, fmt);
 	n = shf_vfprintf(&shf, fmt, args);
 	va_end(args);
 	shf_sclose(&shf); /* null terminates */
@@ -786,7 +786,7 @@ char *shf_smprintf(const char *fmt, ...)
 	va_list args;
 
 	shf_sopen((char *) 0, 0, SHF_WR|SHF_DYNAMIC, &shf);
-	SH_VA_START(args, fmt);
+	va_start(args, fmt);
 	shf_vfprintf(&shf, fmt, args);
 	va_end(args);
 	return shf_sclose(&shf); /* null terminates */

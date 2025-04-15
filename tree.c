@@ -370,7 +370,7 @@ int fptreef(struct shf *shf, int indent, const char *fmt, ...)
 {
   va_list	va;
 
-  SH_VA_START(va, fmt);
+  va_start(va, fmt);
   
   vfptreef(shf, indent, fmt, va);
   va_end(va);
@@ -385,7 +385,7 @@ char *snptreef(char *s, int n, const char *fmt, ...)
 
   shf_sopen(s, n, SHF_WR | (s ? 0 : SHF_DYNAMIC), &shf);
 
-  SH_VA_START(va, fmt);
+  va_start(va, fmt);
   vfptreef(&shf, 0, fmt, va);
   va_end(va);
 

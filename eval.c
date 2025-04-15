@@ -3,6 +3,7 @@
  */
 
 #include <dirent.h>
+#include <fcntl.h>
 #include <pwd.h>
 #include <sys/stat.h>
 

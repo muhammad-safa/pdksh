@@ -11,16 +11,12 @@ static	char *clocktos(clock_t t);
 
 
 /* :, false and true */
-int
-c_label(wp)
-	char **wp;
+int c_label(char **wp)
 {
 	return wp[0][0] == 'f' ? 1 : 0;
 }
 
-int
-c_shift(wp)
-	char **wp;
+int c_shift(char **wp)
 {
 	struct block *l = e->loc;
 	int n;
@@ -704,10 +700,7 @@ c_times(wp)
 /*
  * time pipeline (really a statement, not a built-in command)
  */
-int
-timex(t, f)
-	struct op *t;
-	int f;
+int timex(struct op *t, int f)
 {
 #define TF_NOARGS	BIT(0)
 #define TF_NOREAL	BIT(1)		/* don't report real time */

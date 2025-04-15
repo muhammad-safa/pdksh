@@ -15,21 +15,6 @@
 /* Define as the return value of signal handlers (0 or ).  */
 #undef RETSIGVAL
 
-/* Define if you have posix signal routines (sigaction(), et. al.) */
-#undef POSIX_SIGNALS
-
-/* Define if you have BSD4.2 signal routines (sigsetmask(), et. al.) */
-#undef BSD42_SIGNALS
-
-/* Define if you have BSD4.1 signal routines (sigset(), et. al.) */
-#undef BSD41_SIGNALS
-
-/* Define if you have v7 signal routines (signal(), signal reset on delivery) */
-#undef V7_SIGNALS
-
-/* Define to use the fake posix signal routines (sigact.[ch]) */
-#undef USE_FAKE_SIGACT
-
 /* Define if signals don't interrupt read() */
 #undef SIGNALS_DONT_INTERRUPT
 
@@ -38,9 +23,6 @@
 
 /* Define if C compiler groks __attribute__((...)) (const, noreturn, format) */
 #undef HAVE_GCC_FUNC_ATTR
-
-/* Define to 32-bit signed integer type */
-#undef INT32
 
 /* Define to 32-bit signed integer type if <sys/types.h> doesn't define */
 #undef clock_t
@@ -74,9 +56,6 @@
 
 /* Define if you have a sane <termio.h> header file */
 #undef HAVE_TERMIO_H
-
-/* Define if you have a POSIX.1 compatiable <sys/wait.h> */
-#undef POSIX_SYS_WAIT
 
 /* Define if your OS maps references to /dev/fd/n to file descriptor n */
 #undef HAVE_DEV_FD
