@@ -63,8 +63,6 @@ HISTORY=COMPLEX
 AC_INIT $TARGET
 unset _MK_LIBRARIAN
 
-AC_CHECK_HEADERS termios.h termio.h
-
 AC_CHECK_FIELD stat st_rdev sys/types.h sys/stat.h unistd.h
 
 # check for __attribute__(noreturn), which means that __attribute__ works

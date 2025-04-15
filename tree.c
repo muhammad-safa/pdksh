@@ -7,23 +7,19 @@
 #define INDENT	4
 
 #define tputc(c, shf)	shf_putchar(c, shf);
-static void 	ptree(struct op *t, int indent, struct shf *f);
-static void 	pioact(struct shf *f, int indent, struct ioword *iop);
+static void ptree(struct op *t, int indent, struct shf *f);
+static void pioact(struct shf *f, int indent, struct ioword *iop);
 static void	tputC(int c, struct shf *shf);
 static void	tputS(char *wp, struct shf *shf);
 static void	vfptreef(struct shf *shf, int indent, const char *fmt, va_list va);
 static struct ioword **iocopy(struct ioword **iow, Area *ap);
-static void     iofree(struct ioword **iow, Area *ap);
+static void iofree(struct ioword **iow, Area *ap);
 
 /*
  * print a command tree
  */
 
-static void
-ptree(t, indent, shf)
-	struct op *t;
-	int indent;
-	struct shf *shf;
+static void ptree(struct op *t, int indent, struct shf *shf)
 {
 	char **w;
 	struct ioword **ioact;
@@ -206,11 +202,7 @@ ptree(t, indent, shf)
 	}
 }
 
-static void
-pioact(shf, indent, iop)
-	struct shf *shf;
-	int indent;
-	struct ioword *iop;
+static void pioact(struct shf *shf, int indent, struct ioword *iop)
 {
 	int flag = iop->flag;
 	int type = flag & IOTYPE;
@@ -267,10 +259,7 @@ pioact(shf, indent, iop)
  * variants of fputc, fputs for ptreef and snptreef
  */
 
-static void
-tputC(c, shf)
-	int c;
-	struct shf *shf;
+static void tputC(int c, struct shf *shf)
 {
 	if ((c&0x60) == 0) {		/* C0|C1 */
 		tputc((c&0x80) ? '$' : '^', shf);
@@ -721,10 +710,7 @@ tfree(t, ap)
 	afree((void*)t, ap);
 }
 
-static	void
-iofree(iow, ap)
-	struct ioword **iow;
-	Area *ap;
+static void iofree(struct ioword **iow, Area *ap)
 {
 	struct ioword **iop;
 	struct ioword *p;

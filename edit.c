@@ -201,76 +201,42 @@ x_mode(onoff)
 		oldchars = edchars;
 		cb = tty_state;
 
-#if defined(HAVE_TERMIOS_H) || defined(HAVE_TERMIO_H)
 		edchars.erase = cb.c_cc[VERASE];
 		edchars.kill = cb.c_cc[VKILL];
 		edchars.intr = cb.c_cc[VINTR];
 		edchars.quit = cb.c_cc[VQUIT];
 		edchars.eof = cb.c_cc[VEOF];
-# ifdef VWERASE
+#ifdef VWERASE
 		edchars.werase = cb.c_cc[VWERASE];
-# endif
-# ifdef _CRAY2		/* brain-damaged terminal handler */
+#endif
+#ifdef _CRAY2		/* brain-damaged terminal handler */
 		cb.c_lflag &= ~(ICANON|ECHO);
 		/* rely on print routine to map '\n' to CR,LF */
-# else
+#else
 		cb.c_iflag &= ~(INLCR|ICRNL);
-#  ifdef _BSD_SYSV	/* need to force CBREAK instead of RAW (need CRMOD on output) */
+# ifdef _BSD_SYSV	/* need to force CBREAK instead of RAW (need CRMOD on output) */
 		cb.c_lflag &= ~(ICANON|ECHO);
-#  else
-#   ifdef SWTCH	/* need CBREAK to handle swtch char */
+# else
+#  ifdef SWTCH	/* need CBREAK to handle swtch char */
 		cb.c_lflag &= ~(ICANON|ECHO);
 		cb.c_lflag |= ISIG;
 		cb.c_cc[VINTR] = vdisable_c;
 		cb.c_cc[VQUIT] = vdisable_c;
-#   else
+#  else
 		cb.c_lflag &= ~(ISIG|ICANON|ECHO);
-#   endif
 #  endif
-#  ifdef VLNEXT
+# endif
+# ifdef VLNEXT
 		/* osf/1 processes lnext when ~icanon */
 		cb.c_cc[VLNEXT] = vdisable_c;
-#  endif /* VLNEXT */
-#  ifdef VDISCARD
+# endif /* VLNEXT */
+# ifdef VDISCARD
 		/* sunos 4.1.x & osf/1 processes discard(flush) when ~icanon */
 		cb.c_cc[VDISCARD] = vdisable_c;
-#  endif /* VDISCARD */
+# endif /* VDISCARD */
 		cb.c_cc[VTIME] = 0;
 		cb.c_cc[VMIN] = 1;
-# endif	/* _CRAY2 */
-#else
-	/* Assume BSD tty stuff. */
-		edchars.erase = cb.sgttyb.sg_erase;
-		edchars.kill = cb.sgttyb.sg_kill;
-		cb.sgttyb.sg_flags &= ~ECHO;
-		cb.sgttyb.sg_flags |= CBREAK;
-#  ifdef TIOCGATC
-		edchars.intr = cb.lchars.tc_intrc;
-		edchars.quit = cb.lchars.tc_quitc;
-		edchars.eof = cb.lchars.tc_eofc;
-		edchars.werase = cb.lchars.tc_werasc;
-		cb.lchars.tc_suspc = -1;
-		cb.lchars.tc_dsuspc = -1;
-		cb.lchars.tc_lnextc = -1;
-		cb.lchars.tc_statc = -1;
-		cb.lchars.tc_intrc = -1;
-		cb.lchars.tc_quitc = -1;
-		cb.lchars.tc_rprntc = -1;
-#  else
-		edchars.intr = cb.tchars.t_intrc;
-		edchars.quit = cb.tchars.t_quitc;
-		edchars.eof = cb.tchars.t_eofc;
-		cb.tchars.t_intrc = -1;
-		cb.tchars.t_quitc = -1;
-#   ifdef TIOCGLTC
-		edchars.werase = cb.ltchars.t_werasc;
-		cb.ltchars.t_suspc = -1;
-		cb.ltchars.t_dsuspc = -1;
-		cb.ltchars.t_lnextc = -1;
-		cb.ltchars.t_rprntc = -1;
-#   endif
-#  endif /* TIOCGATC */
-#endif /* HAVE_TERMIOS_H || HAVE_TERMIO_H */
+#endif	/* _CRAY2 */
 
 		set_tty(tty_fd, &cb, TF_WAIT);
 

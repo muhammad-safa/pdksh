@@ -42,18 +42,6 @@
 /* Define if sys_siglist[] is in the C library */
 #undef HAVE_SYS_SIGLIST
 
-/* Define if you have a sane <termios.h> header file */
-#undef HAVE_TERMIOS_H
-
-/* Define if you can include <sys/ioctl.h> with <termios.h> */
-#undef SYS_IOCTL_WITH_TERMIOS
-
-/* Define if you can include <sys/ioctl.h> with <termio.h> */
-#undef SYS_IOCTL_WITH_TERMIO
-
-/* Define if you have a sane <termio.h> header file */
-#undef HAVE_TERMIO_H
-
 /* Define if your OS maps references to /dev/fd/n to file descriptor n */
 #undef HAVE_DEV_FD
 
