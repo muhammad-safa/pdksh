@@ -24,12 +24,6 @@
 # define EASY_HISTORY			/* sjg's trivial history file */
 #endif
 
-/* Can we safely catch sigchld and wait for processes? */
-#if (defined(HAVE_WAITPID) || defined(HAVE_WAIT3)) \
-    && (defined(POSIX_SIGNALS) || defined(BSD42_SIGNALS))
-# define JOB_SIGS
-#endif
-
 /* pdksh assumes system calls return EINTR if a signal happened (this so
  * the signal handler doesn't have to longjmp()).  I don't know if this
  * happens (or can be made to happen) with sigset() et. al. (the bsd41 signal

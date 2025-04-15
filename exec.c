@@ -198,11 +198,8 @@ execute(t, flags)
 #ifdef KSH
 	  case TCOPROC:
 	  {
-# ifdef JOB_SIGS
 		sigset_t	omask;
-# endif /* JOB_SIGS */
 
-# ifdef JOB_SIGS
 		/* Block sigchild as we are using things changed in the
 		 * signal handler
 		 */
@@ -215,7 +212,6 @@ execute(t, flags)
 			unwind(i);
 			/*NOTREACHED*/
 		}
-# endif /* JOB_SIGS */
 		/* Already have a (live) co-process? */
 		if (coproc.job && coproc.write >= 0)
 			errorf("coprocess already exists");
@@ -244,10 +240,8 @@ execute(t, flags)
 			/* create new coprocess id */
 			++coproc.id;
 		}
-# ifdef JOB_SIGS
 		sigprocmask(SIG_SETMASK, &omask, (sigset_t *) 0);
 		e->type = E_EXEC; /* no more need for error handler */
-# endif /* JOB_SIGS */
 
 		/* exchild() closes coproc.* in child after fork,
 		 * will also increment coproc.njobs when the
