@@ -289,16 +289,6 @@ void j_change()
 				our_pgrp = kshpid;
 			}
 		}
-#if defined(NTTYDISC) && defined(TIOCSETD) && !defined(HAVE_TERMIOS_H) && !defined(HAVE_TERMIO_H)
-		if (ttypgrp_ok) {
-			int ldisc = NTTYDISC;
-
-			if (ioctl(tty_fd, TIOCSETD, &ldisc) < 0)
-				warningf(FALSE,
-				"j_init: can't set new line discipline: %s",
-					strerror(errno));
-		}
-#endif /* NTTYDISC && TIOCSETD */
 		if (!ttypgrp_ok)
 			warningf(FALSE, "warning: won't have full job control");
 		if (tty_fd >= 0)
@@ -323,8 +313,7 @@ void j_change()
 }
 
 /* execute tree in child subprocess */
-int
-exchild(t, flags, close_fd)
+int exchild(t, flags, close_fd)
 	struct op	*t;
 	int		flags;
 	int		close_fd;	/* used if XPCLOSE or XCCLOSE */

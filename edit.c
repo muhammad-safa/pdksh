@@ -13,6 +13,7 @@
 #undef EXTERN
 #include <ctype.h>
 #include <sys/stat.h>
+#include <sys/ioctl.h>
 
 
 #if defined(TIOCGWINSZ)
@@ -32,8 +33,7 @@ static char vdisable_c;
 
 
 /* Called from main */
-void
-x_init()
+void x_init()
 {
 	/* set to -2 to force initial binding */
 	edchars.erase = edchars.kill = edchars.intr = edchars.quit
@@ -42,10 +42,8 @@ x_init()
 	edchars.werase = 027;	/* ^W */
 
 #ifdef TIOCGWINSZ
-# ifdef SIGWINCH
 	if (setsig(&sigtraps[SIGWINCH], x_sigwinch, SS_RESTORE_ORIG|SS_SHTRAP))
 		sigtraps[SIGWINCH].flags |= TF_SHELL_USES;
-# endif /* SIGWINCH */
 	got_sigwinch = 1; /* force initial check */
 	check_sigwinch();
 #endif /* TIOCGWINSZ */
@@ -74,8 +72,7 @@ x_init()
 
 #if defined(TIOCGWINSZ)
 static RETSIGTYPE
-x_sigwinch(sig)
-    	int sig;
+x_sigwinch(int sig)
 {
 	got_sigwinch = 1;
 	return RETSIGVAL;
@@ -413,15 +410,7 @@ static void	glob_path (int flags, const char *pat, XPtrV *wp,
 				const char *path);
 
 #if 0 /* not used... */
-int	x_complete_word (const char *str, int slen, int is_command,
-			      int *multiple, char **ret);
-int
-x_complete_word(str, slen, is_command, nwordsp, ret)
-	const char *str;
-	int slen;
-	int is_command;
-	int *nwordsp;
-	char **ret;
+int x_complete_word(const char *str, int slen, int is_command, int *nwordsp, char **ret)
 {
 	int nwords;
 	int prefix_len;
@@ -442,11 +431,7 @@ x_complete_word(str, slen, is_command, nwordsp, ret)
 }
 #endif /* 0 */
 
-void
-x_print_expansions(nwords, words, is_command)
-	int nwords;
-	char *const *words;
-	int is_command;
+void x_print_expansions(int nwords, char *const *words, int is_command)
 {
 	int use_copy = 0;
 	int prefix_len;
@@ -499,12 +484,7 @@ x_print_expansions(nwords, words, is_command)
  *	- sets *wordsp to array of matching strings
  *	- returns number of matching strings
  */
-static int
-x_file_glob(flags, str, slen, wordsp)
-	int flags;
-	const char *str;
-	int slen;
-	char ***wordsp;
+static int x_file_glob(int flags, const char *str, int slen, char ***wordsp)
 {
 	char *toglob;
 	char **words;
@@ -570,10 +550,7 @@ struct path_order_info {
 };
 
 /* Compare routine used in x_command_glob() */
-static int
-path_order_cmp(aa, bb)
-	const void *aa;
-	const void *bb;
+static int path_order_cmp(const void *aa, const void *bb)
 {
 	const struct path_order_info *a = (const struct path_order_info *) aa;
 	const struct path_order_info *b = (const struct path_order_info *) bb;
@@ -583,12 +560,7 @@ path_order_cmp(aa, bb)
 	return t ? t : a->path_order - b->path_order;
 }
 
-static int
-x_command_glob(flags, str, slen, wordsp)
-	int flags;
-	const char *str;
-	int slen;
-	char ***wordsp;
+static int x_command_glob(int flags, const char *str, int slen, char ***wordsp)
 {
 	char *toglob;
 	char *pat;
@@ -680,13 +652,7 @@ x_command_glob(flags, str, slen, wordsp)
 
 #define IS_WORDC(c)	!(ctype(c, C_LEX1) || (c) == '\'' || (c) == '"')
 
-static int
-x_locate_word(buf, buflen, pos, startp, is_commandp)
-	const char *buf;
-	int buflen;
-	int pos;
-	int *startp;
-	int *is_commandp;
+static int x_locate_word(const char *buf, int buflen, int pos, int *startp, int *is_commandp)
 {
 	int p;
 	int start, end;
@@ -734,16 +700,8 @@ x_locate_word(buf, buflen, pos, startp, is_commandp)
 	return end - start;
 }
 
-int
-x_cf_glob(flags, buf, buflen, pos, startp, endp, wordsp, is_commandp)
-	int flags;
-	const char *buf;
-	int buflen;
-	int pos;
-	int *startp;
-	int *endp;
-	char ***wordsp;
-	int *is_commandp;
+int x_cf_glob(int flags, const char *buf, int buflen, int pos,
+              int *startp, int *endp, char ***wordsp, int *is_commandp)
 {
 	int len;
 	int nwords;

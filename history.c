@@ -68,9 +68,7 @@ static int	hstarted;	/* set after hist_init() called */
 static Source	*hist_source;
 
 
-int
-c_fc(wp)
-	char **wp;
+int c_fc(char **wp)
 {
 	struct shf *shf;
 	struct temp UNINITIALIZED(*tf);
@@ -281,9 +279,7 @@ c_fc(wp)
 }
 
 /* Save cmd in history, execute cmd (cmd gets trashed) */
-static int
-hist_execute(cmd)
-	char *cmd;
+static int hist_execute(char *cmd)
 {
 	Source *sold;
 	int ret;
@@ -599,8 +595,7 @@ init_histvec()
 /*
  * save command in history
  */
-void
-histsave(lno, cmd, dowrite)
+void histsave(lno, cmd, dowrite)
 	int lno;	/* ignored (compatibility with COMPLEX_HISTORY) */
 	const char *cmd;
 	int dowrite;	/* ignored (compatibility with COMPLEX_HISTORY) */
@@ -626,10 +621,7 @@ histsave(lno, cmd, dowrite)
  * Append an entry to the last saved command. Used for multiline
  * commands
  */
-void
-histappend(cmd, nl_separate)
-	const char *cmd;
-	int	nl_separate;
+void histappend(const char *cmd, int nl_separate)
 {
 	int	hlen, clen;
 	char	*p;
@@ -718,8 +710,7 @@ void hist_init(Source *s)
  * Handy for having all shells start with a useful history set.
  */
 
-void
-hist_finish()
+void hist_finish()
 {
   static int once;
   FILE *fh;
@@ -756,11 +747,7 @@ hist_finish()
 /*
  * save command in history
  */
-void
-histsave(lno, cmd, dowrite)
-	int lno;
-	const char *cmd;
-	int dowrite;
+void histsave(int lno, const char *cmd, int dowrite)
 {
 	char **hp;
 	char *c, *cp;
@@ -807,9 +794,7 @@ histsave(lno, cmd, dowrite)
 # define HMAGIC2		0xcd
 # define COMMAND		0xff
 
-void
-hist_init(s)
-	Source *s;
+void hist_init(Source *s)
 {
 	unsigned char	*base;
 	int	lines;
@@ -885,10 +870,7 @@ typedef enum state {
 	sn2, sn3, sn4,
 } State;
 
-static int
-hist_count_lines(base, bytes)
-	unsigned char *base;
-	int bytes;
+static int hist_count_lines(unsigned char *base, int bytes)
 {
 	State state = shdr;
 	int lines = 0;
@@ -920,10 +902,7 @@ hist_count_lines(base, bytes)
 /*
  *	Shrink the history file to histsize lines
  */
-static int
-hist_shrink(oldbase, oldbytes)
-	unsigned char *oldbase;
-	int oldbytes;
+static int hist_shrink(unsigned char *oldbase, int oldbytes)
 {
 	int fd;
 	char	nfile[1024];
@@ -975,10 +954,7 @@ hist_shrink(oldbase, oldbytes)
  *	return the pointer and the number of bytes left
  */
 static unsigned char *
-hist_skip_back(base, bytes, no)
-	unsigned char *base;
-	int *bytes;
-	int no;
+hist_skip_back(unsigned char *base, int *bytes, int no)
 {
 	int lines = 0;
 	unsigned char *ep;
@@ -1003,11 +979,7 @@ hist_skip_back(base, bytes, no)
 /*
  *	load the history structure from the stored data
  */
-static void
-histload(s, base, bytes)
-	Source *s;
-	unsigned char *base;
-	int bytes;
+void histload(Source *s, unsigned char *base, int bytes)
 {
 	State state;
 	int	lno;
@@ -1056,11 +1028,7 @@ histload(s, base, bytes)
 /*
  *	Insert a line into the history at a specified number
  */
-static void
-histinsert(s, lno, line)
-	Source *s;
-	int lno;
-	unsigned char *line;
+static void histinsert(Source *s, int lno, unsigned char *line)
 {
 	char **hp;
 

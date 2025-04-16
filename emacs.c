@@ -11,6 +11,7 @@
 
 #include <ctype.h>
 #include <sys/stat.h>
+//#include <sys/ioctl.h>
 
 #include "sh.h"
 #include "edit.h"
@@ -299,10 +300,7 @@ static	struct x_defbindings const x_defbindings[] = {
 	{ XFUNC_mv_back,		2,	'D'  },
 };
 
-int
-x_emacs(buf, len)
-	char *buf;
-	size_t len;
+int x_emacs(char *buf, size_t len)
 {
 	int	c;
 	const char *p;
@@ -367,9 +365,7 @@ x_emacs(buf, len)
 	}
 }
 
-static int
-x_insert(c)
-	int c;
+static int x_insert(int c)
 {
 	char	str[2];
 
@@ -672,9 +668,7 @@ x_size_str(cp)
 	return size;
 }
 
-static int
-x_size(c)
-	int c;
+static int x_size(int c)
 {
 	if (c=='\t')
 		return 4;	/* Kludge, tabs are always four spaces. */
@@ -683,9 +677,7 @@ x_size(c)
 	return 1;
 }
 
-static void
-x_zots(str)
-	char *str;
+static void x_zots(char *str)
 {
   int	adj = x_adj_done;
 
@@ -694,9 +686,7 @@ x_zots(str)
     x_zotc(*str++);
 }
 
-static void
-x_zotc(c)
-	int c;
+static void x_zotc(int c)
 {
 	if (c == '\t')  {
 		/*  Kludge, tabs are always four spaces.  */
@@ -708,9 +698,7 @@ x_zotc(c)
 		x_e_putc(c);
 }
 
-static int
-x_mv_back(c)
-	int c;
+static int x_mv_back(int c)
 {
 	int col = xcp - xbuf;
 
@@ -724,9 +712,7 @@ x_mv_back(c)
 	return KSTD;
 }
 
-static int
-x_mv_forw(c)
-	int c;
+static int x_mv_forw(int c)
 {
 	int nleft = xep - xcp;
 
@@ -740,9 +726,7 @@ x_mv_forw(c)
 	return KSTD;
 }
 
-static int
-x_search_char_forw(c)
-	int c;
+static int x_search_char_forw(int c)
 {
 	char *cp = xcp;
 
@@ -761,9 +745,7 @@ x_search_char_forw(c)
 	return KSTD;
 }
 
-static int
-x_search_char_back(c)
-	int c;
+static int x_search_char_back(int c)
 {
 	char *cp = xcp, *p;
 
@@ -783,9 +765,7 @@ x_search_char_back(c)
 	return KSTD;
 }
 
-static int
-x_newline(c)
-	int c;
+static int x_newline(int c)
 {
 	x_e_putc('\r');
 	x_e_putc('\n');
@@ -794,12 +774,7 @@ x_newline(c)
 	return KEOL;
 }
 
-static int
-x_end_of_text(c)
-	int c;
-{
-	return KEOL;
-}
+static int x_end_of_text(int c) { return KEOL; }
 
 static int x_beg_hist(c) int c; { x_load_hist(history); return KSTD;}
 
@@ -813,9 +788,7 @@ static int x_next_com(c) int c; { x_load_hist(x_histp + x_arg); return KSTD;}
  * If no argument is given history 1 is probably not what you
  * want so we'll simply go to the oldest one.
  */
-static int
-x_goto_hist(c)
-	int c;
+static int x_goto_hist(int c)
 {
 	if (x_arg_defaulted)
 		x_load_hist(history);
@@ -824,9 +797,7 @@ x_goto_hist(c)
 	return KSTD;
 }
 
-static void
-x_load_hist(hp)
-	char **hp;
+static void x_load_hist(char **hp)
 {
 	int	oldsize;
 
@@ -846,17 +817,13 @@ x_load_hist(hp)
 	  x_redraw(oldsize);
 }
 
-static int
-x_nl_next_com(c)
-	int	c;
+static int x_nl_next_com(int c)
 {
 	x_nextcmd = source->line - (histptr - x_histp) + 1;
 	return (x_newline(c));
 }
 
-static int
-x_eot_del(c)
-	int	c;
+static int x_eot_del(int c)
 {
 	if (xep == xbuf && x_arg_defaulted)
 		return (x_end_of_text(c));
@@ -865,9 +832,7 @@ x_eot_del(c)
 }
 
 /* reverse incremental history search */
-static int
-x_search_hist(c)
-	int c;
+static int x_search_hist(int c)
 {
 	int offset = -1;	/* offset of match in xbuf, else -1 */
 	char pat [256+1];	/* pattern buffer */
@@ -928,11 +893,7 @@ x_search_hist(c)
 }
 
 /* search backward from current line */
-static int
-x_search(pat, sameline, offset)
-	char *pat;
-	int sameline;
-	int offset;
+static int x_search(char *pat, int sameline, int offset)
 {
 	char **hp;
 	int i;
@@ -953,9 +914,7 @@ x_search(pat, sameline, offset)
 }
 
 /* return position of first match of pattern in string, else -1 */
-static int
-x_match(str, pat)
-	char *str, *pat;
+static int x_match(char *str, char *pat)
 {
 	if (*pat == '^') {
 		return (strncmp(str, pat+1, strlen(pat+1)) == 0) ? 0 : -1;
@@ -965,9 +924,7 @@ x_match(str, pat)
 	}
 }
 
-static int
-x_del_line(c)
-	int c;
+static int x_del_line(int c)
 {
 	int	i, j;
 
@@ -984,38 +941,29 @@ x_del_line(c)
 	return KSTD;
 }
 
-static int
-x_mv_end(c)
-	int c;
+static int x_mv_end(int c)
 {
 	x_goto(xep);
 	return KSTD;
 }
 
-static int
-x_mv_begin(c)
-	int c;
+static int x_mv_begin(int c)
 {
 	x_goto(xbuf);
 	return KSTD;
 }
 
-static int
-x_draw_line(c)
-	int c;
+static int x_draw_line(int c)
 {
 	x_redraw(-1);
 	return KSTD;
-
 }
 
 /* Redraw (part of) the line.  If limit is < 0, the everything is redrawn
  * on a NEW line, otherwise limit is the screen column up to which needs
  * redrawing.
  */
-static void
-x_redraw(limit)
-  int limit;
+static void x_redraw(int limit)
 {
 	int	i, j;
 	char	*cp;
@@ -1069,9 +1017,7 @@ x_redraw(limit)
 	return;
 }
 
-static int
-x_transpose(c)
-	int c;
+static int x_transpose(int c)
 {
 	char	tmp;
 
@@ -1122,25 +1068,19 @@ x_transpose(c)
 	return KSTD;
 }
 
-static int
-x_literal(c)
-	int c;
+static int x_literal(int c)
 {
 	x_curprefix = -1;
 	return KSTD;
 }
 
-static int
-x_meta1(c)
-	int c;
+static int x_meta1(int c)
 {
 	x_curprefix = 1;
 	return KSTD;
 }
 
-static int
-x_meta2(c)
-	int c;
+static int x_meta2(int c)
 {
 	x_curprefix = 2;
 	return KSTD;
@@ -1256,9 +1196,7 @@ x_stuffreset(c)
 #endif
 }
 
-static int
-x_stuff(c)
-	int c;
+static int x_stuff(int c)
 {
 #if 0 || defined TIOCSTI
 	char	ch = c;
@@ -1271,9 +1209,7 @@ x_stuff(c)
 	return KSTD;
 }
 
-static char *
-x_mapin(cp)
-	const char *cp;
+static char *x_mapin(const char *cp)
 {
 	char *new, *op;
 

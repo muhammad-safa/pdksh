@@ -273,26 +273,3 @@ char *	arrayname(const char *str);
 void    set_array(const char *var, int reset, char **vals);
 /* version.c */
 /* vi.c: see edit.h */
-
-
-/* Hack to avoid billions of compile warnings on SunOS 4.1.x */
-#if defined(MUN) && defined(sun) && !defined(__svr4__)
-extern void bcopy(const void *src, void *dst, size_t size);
-extern int fclose(FILE *fp);
-extern int fprintf(FILE *fp, const char *fmt, ...);
-extern int fread(void *buf, int size, int num, FILE *fp);
-extern int ioctl(int fd, int request, void *arg);
-extern int killpg(int pgrp, int sig);
-extern int nice(int n);
-extern int readlink(const char *path, char *buf, int bufsize);
-extern int setpgrp(int pid, int pgrp);
-extern int strcasecmp(const char *s1, const char *s2);
-extern int tolower(int);
-extern int toupper(int);
-/*  Include files aren't included yet */
-extern int getrlimit( /* int resource, struct rlimit *rpl */ );
-extern int getrusage( /* int who, struct rusage *rusage */ );
-extern int gettimeofday( /* struct timeval *tv, struct timezone *tz */ );
-extern int setrlimit( /* int resource, struct rlimit *rlp */ );
-extern int lstat( /* const char *path, struct stat *buf */ );
-#endif

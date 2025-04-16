@@ -35,8 +35,7 @@ static void     munset     (mbox_t *mlist); /* free mlist and mval */
 static mbox_t * mballoc    (char *p, char *m); /* allocate a new mbox */
 static void     mprintit   (mbox_t *mbp);
 
-void
-mcheck()
+void mcheck()
 {
 	mbox_t	*mbp;
 	time_t		 now;
@@ -79,16 +78,12 @@ mcheck()
 	}
 }
 
-void
-mcset(interval)
-	long interval;
+void mcset(long interval)
 {
 	mailcheck_interval = interval;
 }
 
-void
-mbset(p)
-	char	*p;
+void mbset(char *p)
 {
 	struct stat	stbuf;
 

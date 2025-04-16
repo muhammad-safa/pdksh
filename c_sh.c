@@ -46,9 +46,7 @@ int c_shift(char **wp)
 	return 0;
 }
 
-int
-c_umask(wp)
-	char **wp;
+int c_umask(char **wp)
 {
 	int i;
 	char *cp;
@@ -840,9 +838,7 @@ int c_exec(char **wp)
 }
 
 /* dummy function, special case in comexec() */
-int
-c_builtin(wp)
-	char ** wp;
+int c_builtin(char **wp)
 {
 	return 0;
 }
